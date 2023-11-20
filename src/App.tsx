@@ -1,23 +1,21 @@
-import { useState } from "react";
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import "./App.css";
+import LoginPage from './page/auth/LoginPage';
+import GitHubCallbackPage from './page/auth/GitHubCallbackPage';
+import MainPage from './page/MainPage';
+import { PATH } from './constants/Path';
 
 function App() {
-  const [count, setCount] = useState(0);
 
   return (
     <>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-      <div>
-        <h1 className="text-3xl font-bold underline">Hello world!</h1>
-      </div>
-      <div>
-        <button className="btn w-64 rounded-full">Button</button>
-      </div>
+      <BrowserRouter>
+        <Routes>
+          <Route path={PATH.MAIN} element={<MainPage />} />
+          <Route path={PATH.AUTH.LOGIN} element={<LoginPage />} />
+          <Route path={PATH.AUTH.CALLBACK} element={<GitHubCallbackPage />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
