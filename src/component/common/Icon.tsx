@@ -1,8 +1,10 @@
 import GitHubMark from "../../assets/github-mark-white.svg?react";
+import Folder from "../../assets/folder.svg?react";
 import React from 'react';
 
 export const icons = {
   github_mark: GitHubMark,
+  folder: Folder,
 };
 
 type IconProps = {
@@ -28,5 +30,5 @@ export const Icon: React.FC<IconProps> = function ({
       ? "24px"
       : "40px";
 
-  return (<IconComponent width={iconSize} height={iconSize} viewBox={`0 0 98 96`} {...props} />);
+  return (<IconComponent width={iconSize} height={iconSize} {...props} />);
 };
