@@ -2,8 +2,9 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import "./App.css";
 import LoginPage from './page/auth/LoginPage';
 import GitHubCallbackPage from './page/auth/GitHubCallbackPage';
-import MainPage from './page/MainPage';
 import { PATH } from './constants/Path';
+import AllPostListPage from './page/post/AllPostListPage';
+import AdminLoginCallbackPage from './page/auth/AdminLoginCallbackPage';
 
 function App() {
 
@@ -11,9 +12,10 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path={PATH.MAIN} element={<MainPage />} />
+          <Route path={PATH.MAIN} element={<AllPostListPage />} />
           <Route path={PATH.AUTH.LOGIN} element={<LoginPage />} />
           <Route path={PATH.AUTH.CALLBACK} element={<GitHubCallbackPage />} />
+          <Route path={PATH.AUTH.ADMIN_CALLBACK} element={<AdminLoginCallbackPage />} />
         </Routes>
       </BrowserRouter>
     </>
