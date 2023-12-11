@@ -2,12 +2,13 @@ import { Icon } from "../../common/Icon";
 import { Post } from "./PostType";
 
 type Props = {
+  key: number,
   post: Post,
 }
 
 const DESCRIPTION_MAX_LENGTH = 250;
 
-export default function PostItem({post}: Props) {
+export default function PostItem({key, post}: Props) {
 
   function convertHtmlToText(htmlString: string): string {
     const parser = new DOMParser();
@@ -23,7 +24,7 @@ export default function PostItem({post}: Props) {
   }
 
   return (
-    <div className="card lg:card-side shadow-xl border p-4">
+    <div key={key} className="card lg:card-side shadow-xl border p-4">
       <div className="flex-none flex items-center justify-center">
         {/* <div className="skeleton h-32 w-52">
           <img src={post.thumbnailUrl} className="object-cover w-full h-full rounded-sm" />

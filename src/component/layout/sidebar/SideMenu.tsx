@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SideFolderTree from "./SideFolderTree";
 import axios from "axios";
 import { Folder } from "./SideBarType";
+import { API_PATH } from "../../../constants/ApiPath";
 
 export default function SideMenu() {
 
@@ -10,7 +11,7 @@ export default function SideMenu() {
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_BASE_URL + "/folders", {
+      .get(import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.GET_ALL, {
         withCredentials: true,
       })
       .then(function (response) {
