@@ -5,6 +5,7 @@ import axios from "axios";
 import { API_PATH } from "../../constants/ApiPath";
 
 export default function AllPostListContent() {
+
   let timeoutId: number;
 
   const [page, setPage] = useState<number>(0);
