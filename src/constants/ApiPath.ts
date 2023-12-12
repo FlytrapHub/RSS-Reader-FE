@@ -5,6 +5,11 @@ export const API_PATH = {
   BOOKMARK: {
     GET_ALL: "/bookmarks",
   },
+  SUBSCRIBE: {
+    POST: {
+      GET_ALL: (subscribeId: number) => `/subscribes/${subscribeId}/posts`,
+    }
+  },
   FOLDER: {
     GET_ALL: "/folders",
   },
