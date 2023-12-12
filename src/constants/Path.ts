@@ -1,5 +1,6 @@
 export const PATH = {
   MAIN: "/",
+  BOOKMARK: "bookmark",
   AUTH: {
     LOGIN: "/login",
     CALLBACK: "/callback",
