@@ -4,7 +4,7 @@ import Layout from "../../component/layout/Layout";
 export default function AllPostListPage() {
     return (
         <>
-            <Layout>
+            <Layout headerTitle={"전체 보기"}>
                 <AllPostListContent />
             </Layout>
         </>

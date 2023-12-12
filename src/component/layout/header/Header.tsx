@@ -1,6 +1,10 @@
 import { Icon } from "../../common/Icon";
 
-export default function Header() {
+type Props = {
+  title: string,
+}
+
+export default function Header({title}: Props) {
   return (
     <div className="navbar">
       {/* Open Sidebar */}
@@ -15,7 +19,7 @@ export default function Header() {
 
       {/* Page Name */}
       <div className="navbar-center">
-        <p className="text-3xl font-bold">전체 보기</p>
+        <p className="text-3xl font-bold">{title}</p>
       </div>
       
       {/* User Info */}
