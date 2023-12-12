@@ -6,6 +6,7 @@ import { PATH } from './constants/Path';
 import AllPostListPage from './page/post/AllPostListPage';
 import AdminLoginCallbackPage from './page/auth/AdminLoginCallbackPage';
 import BookmarkListPage from './page/post/BookmarkListPage';
+import SubscribePostListPage from './page/post/SubscribePostListPage';
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
         <Routes>
           <Route path={PATH.MAIN} element={<AllPostListPage />} />
           <Route path={PATH.BOOKMARK} element={<BookmarkListPage />} />
+          <Route path={PATH.SUBSCRIBE} element={<SubscribePostListPage />} />
           <Route path={PATH.AUTH.LOGIN} element={<LoginPage />} />
           <Route path={PATH.AUTH.CALLBACK} element={<GitHubCallbackPage />} />
           <Route path={PATH.AUTH.ADMIN_CALLBACK} element={<AdminLoginCallbackPage />} />
