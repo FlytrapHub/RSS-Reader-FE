@@ -4,8 +4,14 @@ import axios from "axios";
 import { Folder } from "./SideBarType";
 import { API_PATH } from "../../../constants/ApiPath";
 import { PATH } from "../../../constants/Path";
+import { useNavigate } from "react-router-dom";
 
 export default function SideMenu() {
+
+  const navigate = useNavigate();
+  const goToPage = (path: string) => {
+    navigate(path);
+  };
 
   const[privateFolders, setPrivateFolders] = useState<Folder[]>([]);
   const[sharedFolders, setSharedFolders] = useState<Folder[]>([]);
@@ -32,10 +38,10 @@ export default function SideMenu() {
   return (
     <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content gap-2">
       <li>
-        <a className="btn btn-success text-lg" href={PATH.MAIN}>전체 보기</a>
+        <a className="btn btn-success text-lg" onClick={() => goToPage(PATH.MAIN)}>전체 보기</a>
       </li>
       <li>
-        <a className="btn btn-success text-lg" href={PATH.BOOKMARK}>북마크</a>
+        <a className="btn btn-success text-lg" onClick={() => goToPage(PATH.BOOKMARK)}>북마크</a>
       </li>
       <li>
         <a className="btn btn-success text-lg">구독 관리</a>
