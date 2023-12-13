@@ -3,10 +3,9 @@ import "./App.css";
 import LoginPage from './page/auth/LoginPage';
 import GitHubCallbackPage from './page/auth/GitHubCallbackPage';
 import { PATH } from './constants/Path';
-import AllPostListPage from './page/post/AllPostListPage';
 import AdminLoginCallbackPage from './page/auth/AdminLoginCallbackPage';
-import BookmarkListPage from './page/post/BookmarkListPage';
-import SubscribePostListPage from './page/post/SubscribePostListPage';
+import MainPage from './page/MainPage';
+import { Pages } from './constants/Pages';
 
 function App() {
 
@@ -14,9 +13,9 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path={PATH.MAIN} element={<AllPostListPage />} />
-          <Route path={PATH.BOOKMARK} element={<BookmarkListPage />} />
-          <Route path={PATH.SUBSCRIBE} element={<SubscribePostListPage />} />
+          <Route path={PATH.MAIN} element={<MainPage page={Pages.ALL_POST} />} />
+          <Route path={PATH.BOOKMARK} element={<MainPage page={Pages.BOOKMARK} />} />
+          <Route path={PATH.SUBSCRIBE} element={<MainPage page={Pages.SUBSCRIBE} />} />
           <Route path={PATH.AUTH.LOGIN} element={<LoginPage />} />
           <Route path={PATH.AUTH.CALLBACK} element={<GitHubCallbackPage />} />
           <Route path={PATH.AUTH.ADMIN_CALLBACK} element={<AdminLoginCallbackPage />} />
