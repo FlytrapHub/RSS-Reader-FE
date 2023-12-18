@@ -4,6 +4,8 @@ export const API_PATH = {
   },
   BOOKMARK: {
     GET_ALL: "/bookmarks",
+    ADD: (postId: number) => `/posts/${postId}/bookmarks`,
+    DELETE: (postId: number) => `/posts/${postId}/bookmarks`,
   },
   SUBSCRIBE: {
     POST: {
