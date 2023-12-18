@@ -83,7 +83,10 @@ export default function PostItem({ key, post }: Props) {
         <h2 className="card-title">{post.title}</h2>
         <p className="text-left">{convertHtmlToText(post.description)}</p>
       </div>
-      <div className="flex flex-none space-x-4">
+      <div className="flex flex-none space-x-2">
+        <div>
+          {post.open ? <Icon name="view" /> : undefined}
+        </div>
         <div onClick={() => bookmarkHandler(post.id)}>
           {isBookmark ? <Icon name="bookmarkFill" /> : <Icon name="bookmark" />}
         </div>
