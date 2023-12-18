@@ -3,6 +3,7 @@ import Folder from "../../assets/folder.svg?react";
 import Stack from "../../assets/stack.svg?react";
 import Bookmark from "../../assets/bookmark.svg?react";
 import BookmarkFill from "../../assets/bookmark-fill.svg?react";
+import View from "../../assets/view.svg?react";
 import React from 'react';
 
 export const icons = {
@@ -11,6 +12,7 @@ export const icons = {
   stack: Stack,
   bookmark: Bookmark,
   bookmarkFill: BookmarkFill,
+  view: View,
 };
 
 type IconProps = {
