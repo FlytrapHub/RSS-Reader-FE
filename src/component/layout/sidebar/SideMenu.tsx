@@ -54,6 +54,9 @@ export default function SideMenu() {
           <SideFolderTree title={"공유 폴더"} folders={sharedFolders} />
         </li>
       </div>
+      <div>
+        icons by <a href="https://icons8.com/" target="_blank">icons8.com</a>
+      </div>
     </ul>
   );
 }
