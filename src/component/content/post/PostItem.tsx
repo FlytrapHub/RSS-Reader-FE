@@ -5,13 +5,15 @@ import { API_PATH } from "../../../constants/ApiPath";
 import axios from "axios";
 
 type Props = {
-  key: number;
-  post: Post;
+  key: number,
+  post: Post,
+  setPostForModal: (post?: Post) => void,
 };
 
 const DESCRIPTION_MAX_LENGTH = 250;
 
-export default function PostItem({ key, post }: Props) {
+export default function PostItem({ key, post, setPostForModal }: Props) {
+  const [isOpen, setIsOpen] = useState<boolean>(post.open);
   const [isBookmark, setIsBookmark] = useState<boolean>(post.bookmark);
 
   function convertHtmlToText(htmlString: string): string {
@@ -30,9 +32,12 @@ export default function PostItem({ key, post }: Props) {
   const bookmarkHandler = (postId: number) => {
     if (isBookmark) {
       axios
-        .delete(import.meta.env.VITE_BASE_URL + API_PATH.BOOKMARK.DELETE(postId), {
-          withCredentials: true,
-        })
+        .delete(
+          import.meta.env.VITE_BASE_URL + API_PATH.BOOKMARK.DELETE(postId),
+          {
+            withCredentials: true,
+          }
+        )
         .then(function (response) {
           if (response.status == 200) {
             setIsBookmark(false);
@@ -65,6 +70,30 @@ export default function PostItem({ key, post }: Props) {
     }
   };
 
+  const openPostModal = () => {
+    axios
+    .get(
+      import.meta.env.VITE_BASE_URL + API_PATH.POST.GET(post.id),
+      {
+        withCredentials: true,
+      }
+    )
+    .then(function (response) {
+      if (response.status == 200) {
+        const responsePost: Post = response.data.data;
+        setIsOpen(true);
+        setPostForModal(responsePost);
+      } else {
+        setPostForModal(undefined);
+        throw new Error("Request failed: " + response.status);
+      }
+    })
+    .catch(function (error) {
+      setPostForModal(undefined);
+      console.log("error: {}", error);
+    });
+  };
+
   return (
     <div key={key} className="card lg:card-side shadow-xl border p-4">
       <div className="flex-none flex items-center justify-center">
@@ -76,7 +105,7 @@ export default function PostItem({ key, post }: Props) {
           className="object-cover h-32 w-52 rounded-xl"
         />
       </div>
-      <div className="flex-1 px-4">
+      <div className="flex-1 px-4" onClick={openPostModal}>
         <p className="text-left text-sm text-gray-400">
           {post.subscribeTitle} ({post.pubDate.substring(0, 10)})
         </p>
@@ -84,9 +113,7 @@ export default function PostItem({ key, post }: Props) {
         <p className="text-left">{convertHtmlToText(post.description)}</p>
       </div>
       <div className="flex flex-none space-x-2">
-        <div>
-          {post.open ? <Icon name="view" /> : undefined}
-        </div>
+        <div>{isOpen ? <Icon name="view" /> : undefined}</div>
         <div onClick={() => bookmarkHandler(post.id)}>
           {isBookmark ? <Icon name="bookmarkFill" /> : <Icon name="bookmark" />}
         </div>

@@ -1,5 +1,6 @@
 export const API_PATH = {
   POST: {
+    GET: (postId: number) => `/posts/${postId}`,
     GET_ALL: "/posts",
   },
   BOOKMARK: {
