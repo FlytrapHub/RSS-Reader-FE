@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import PostItem from "./post/PostItem";
 import { Post } from "./post/PostType";
 import axios from "axios";
 import { API_PATH } from "../../constants/ApiPath";
+import PostItemList from "./post/PostItemList";
 
 type Props = {
   subscribeId: number,
@@ -67,11 +67,6 @@ export default function SubscribePostListContent({subscribeId}: Props) {
   }, [posts, page]);
 
   return (
-    <div className="w-full flex flex-col p-4 gap-4">
-      {posts &&
-        posts.map((post: Post, index: number) => (
-          <PostItem key={index} post={post} />
-        ))}
-    </div>
+    <PostItemList posts={posts} />
   );
 }
