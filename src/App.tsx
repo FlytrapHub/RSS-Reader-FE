@@ -16,6 +16,7 @@ function App() {
           <Route path={PATH.MAIN} element={<MainPage page={Pages.ALL_POST} />} />
           <Route path={PATH.BOOKMARK} element={<MainPage page={Pages.BOOKMARK} />} />
           <Route path={PATH.SUBSCRIBE} element={<MainPage page={Pages.SUBSCRIBE} />} />
+          <Route path={PATH.SETTING.FOLDERS} element={<MainPage page={Pages.SET_FOLDERS} />} />
           <Route path={PATH.AUTH.LOGIN} element={<LoginPage />} />
           <Route path={PATH.AUTH.CALLBACK} element={<GitHubCallbackPage />} />
           <Route path={PATH.AUTH.ADMIN_CALLBACK} element={<AdminLoginCallbackPage />} />
