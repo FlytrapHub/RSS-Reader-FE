@@ -44,7 +44,7 @@ export default function SideMenu() {
         <a className="btn btn-success text-lg" onClick={() => goToPage(PATH.BOOKMARK)}>북마크</a>
       </li>
       <li>
-        <a className="btn btn-success text-lg">구독 관리</a>
+        <a className="btn btn-success text-lg" onClick={() => goToPage(PATH.SETTING.FOLDERS)}>구독 관리</a>
       </li>
       <div className="border-2 border-success bg-green-50 rounded-box gap-2">
         <li>

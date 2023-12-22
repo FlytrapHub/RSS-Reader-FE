@@ -5,6 +5,7 @@ import AllPostListContent from "../component/content/AllPostListContent";
 import BookmarkListContent from "../component/content/BookmarkListContent";
 import SubscribePostListContent from "../component/content/SubscribePostListContent";
 import { Pages } from "../constants/Pages";
+import FolderSettingContent from "../component/content/FolderSettingContent";
 
 type Props = {
   page: Pages;
@@ -31,6 +32,11 @@ export default function MainPage({page} :Props) {
         headerTitle = data.subscribeTitle;
         key = data.subscribeId;
         content = <SubscribePostListContent key={key} subscribeId={data.subscribeId} />
+        break;
+    }
+    case Pages.SET_FOLDERS: {
+      content = <FolderSettingContent />
+      break;
     }
   }
   
