@@ -1,7 +1,13 @@
+import { Folder } from "./SideBarType";
 import SideLogo from "./SideLogo";
 import SideMenu from "./SideMenu";
 
-export default function SideBar() {
+type Props = {
+  privateFolders: Folder[],
+  sharedFolders: Folder[],
+};
+
+export default function SideBar({ privateFolders, sharedFolders }: Props) {
   return (
     <>
       <label
@@ -12,7 +18,10 @@ export default function SideBar() {
 
       <SideLogo />
 
-      <SideMenu />
+      <SideMenu 
+        privateFolders={privateFolders} 
+        sharedFolders={sharedFolders} 
+      />
     </>
   );
 }
