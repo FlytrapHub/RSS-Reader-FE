@@ -64,7 +64,9 @@ export default function MainPage({ page }: Props) {
       content = (
         <FolderSettingContent
           privateFolders={privateFolders}
+          setPrivateFolders={setPrivateFolders}
           sharedFolders={sharedFolders}
+          setSharedFolders={setSharedFolders}
         />
       );
       break;
