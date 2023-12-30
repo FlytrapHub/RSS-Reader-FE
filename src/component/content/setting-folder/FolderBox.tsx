@@ -3,12 +3,14 @@ import { Folder } from "../../layout/sidebar/SideBarType";
 
 type Props = {
   folder: Folder,
+  setFolderForModal: React.Dispatch<React.SetStateAction<Folder | undefined>>, 
   setIsFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
-export default function FolderBox({ folder, setIsFolderModalOpen }: Props) {
+export default function FolderBox({ folder, setFolderForModal, setIsFolderModalOpen }: Props) {
 
   const openFolderModal = () => {
+    setFolderForModal(folder);
     setIsFolderModalOpen(true);
   }
 
