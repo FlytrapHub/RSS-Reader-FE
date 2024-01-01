@@ -1,16 +1,16 @@
-import { useState } from "react";
 import { Folder } from "../../layout/sidebar/SideBarType";
 import FolderBox from "./FolderBox";
-import FolderModal from "./folder-modal/FolderModal";
 
 type Props = {
-  title: string;
-  folders: Folder[];
+  title: string,
+  folders: Folder[],
+  setFolderForModal: React.Dispatch<React.SetStateAction<Folder | undefined>>, 
+  setIsFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
 };
 
-export default function FolderList({ title, folders }: Props) {
-  const [isFolderModalOpen, setIsFolderModalOpen] = useState<boolean>(false);
-  const [folderForModal, setFolderForModal] = useState<Folder | undefined>();
+export default function FolderList({ title, folders, setFolderForModal, setIsFolderModalOpen }: Props) {
+  // const [isFolderModalOpen, setIsFolderModalOpen] = useState<boolean>(false);
+  // const [folderForModal, setFolderForModal] = useState<Folder | undefined>();
 
   return (
     <>
@@ -26,12 +26,12 @@ export default function FolderList({ title, folders }: Props) {
             />
           ))}
       </div>
-      <FolderModal
+      {/* <FolderModal
         isFolderModalOpen={isFolderModalOpen}
         setIsFolderModalOpen={setIsFolderModalOpen}
         folder={folderForModal}
         setFolder={setFolderForModal}
-      />
+      /> */}
     </>
   );
 }

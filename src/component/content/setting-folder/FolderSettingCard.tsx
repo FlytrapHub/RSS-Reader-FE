@@ -3,6 +3,7 @@ import { Folder } from "../../layout/sidebar/SideBarType";
 import FolderList from "./FolderList";
 import { API_PATH } from "../../../constants/ApiPath";
 import { useState } from "react";
+import FolderModal from "./folder-modal/FolderModal";
 
 type Props = {
   privateFolders: Folder[],
@@ -18,6 +19,8 @@ export default function FolderSettingCard({
   setSharedFolders,
 }: Props) {
   const [newFolderName, setNewFolderName] = useState<string>("");
+  const [isFolderModalOpen, setIsFolderModalOpen] = useState<boolean>(false);
+  const [folderForModal, setFolderForModal] = useState<Folder | undefined>();
 
   const isFolderNameEmpty = (): boolean => {
     return newFolderName !== undefined && newFolderName !== "";
@@ -95,9 +98,15 @@ export default function FolderSettingCard({
           </button>
         </div>
         <div className="flex flex-col">
-          <FolderList title={'개인 폴더'} folders={privateFolders} />
-          <FolderList title={'공유 폴더'} folders={sharedFolders} />
+          <FolderList title={'개인 폴더'} folders={privateFolders} setFolderForModal={setFolderForModal} setIsFolderModalOpen={setIsFolderModalOpen} />
+          <FolderList title={'공유 폴더'} folders={sharedFolders} setFolderForModal={setFolderForModal} setIsFolderModalOpen={setIsFolderModalOpen} />
         </div>
+        <FolderModal
+          isFolderModalOpen={isFolderModalOpen}
+          setIsFolderModalOpen={setIsFolderModalOpen}
+          folder={folderForModal}
+          setFolder={setFolderForModal}
+        />
       </div>
     </div>
   );
