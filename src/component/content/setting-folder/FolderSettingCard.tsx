@@ -106,6 +106,10 @@ export default function FolderSettingCard({
           setIsFolderModalOpen={setIsFolderModalOpen}
           folder={folderForModal}
           setFolder={setFolderForModal}
+          privateFolders={privateFolders}
+          setPrivateFolders={setPrivateFolders}
+          sharedFolders={sharedFolders}
+          setSharedFolders={setSharedFolders}
         />
       </div>
     </div>
