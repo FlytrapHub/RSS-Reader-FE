@@ -4,10 +4,14 @@ import MemberSection from "./MemberSection";
 import { Folder } from "../../../layout/sidebar/SideBarType";
 
 type Props = {
-  isFolderModalOpen: boolean,
-  setIsFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  folder?: Folder,
-  setFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>,
+  isFolderModalOpen: boolean;
+  setIsFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  folder?: Folder;
+  setFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>;
+  privateFolders: Folder[];
+  setPrivateFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
+  sharedFolders: Folder[];
+  setSharedFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
 };
 
 export default function FolderModal({
@@ -15,8 +19,11 @@ export default function FolderModal({
   setIsFolderModalOpen,
   folder,
   setFolder,
+  privateFolders,
+  setPrivateFolders,
+  sharedFolders,
+  setSharedFolders,
 }: Props) {
-    
   const closeFolderModal = () => {
     setIsFolderModalOpen(false);
   };
@@ -35,9 +42,15 @@ export default function FolderModal({
             ✕
           </button>
           <h3 className="font-bold text-lg">폴더 명</h3>
-          
+
           <div className="flex md:flex-row flex-col gap-2">
-            <SubscribeSection folder={folder} setFolder={setFolder} />
+            <SubscribeSection
+              folder={folder}
+              privateFolders={privateFolders}
+              setPrivateFolders={setPrivateFolders}
+              sharedFolders={sharedFolders}
+              setSharedFolders={setSharedFolders}
+            />
             <MemberSection folder={folder} setFolder={setFolder} />
           </div>
         </div>

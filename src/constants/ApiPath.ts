@@ -11,6 +11,7 @@ export const API_PATH = {
   SUBSCRIBE: {
     POST: {
       GET_ALL: (subscribeId: number) => `/subscribes/${subscribeId}/posts`,
+      ADD: (folderId: number) => `/folders/${folderId}/rss`
     }
   },
   FOLDER: {
