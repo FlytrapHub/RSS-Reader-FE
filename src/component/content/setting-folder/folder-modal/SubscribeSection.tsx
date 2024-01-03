@@ -19,7 +19,7 @@ export default function SubscribeSection({
   sharedFolders,
   setSharedFolders,
 }: Props) {
-  const[newBlogUrl, setNewBlogUrl] = useState<string>("");
+  const [newBlogUrl, setNewBlogUrl] = useState<string>("");
 
   const isBlogUrlEmpty = (): boolean => {
     return newBlogUrl !== undefined && newBlogUrl !== "";
@@ -71,8 +71,8 @@ export default function SubscribeSection({
           id: responseData.subscribeId,
           title: responseData.subscribeTitle,
           unreadCount: responseData.unreadCount,
-        }
-        folder.blogs.push(newBlog)
+        };
+        folder.blogs.push(newBlog);
 
         const newFolder: Folder = {
           id: folder.id,
@@ -83,11 +83,15 @@ export default function SubscribeSection({
         };
 
         if (newFolder.invitedMembers.length == 0) {
-          const folderIndex: number = privateFolders.findIndex(f => f.id == newFolder.id)
+          const folderIndex: number = privateFolders.findIndex(
+            (f) => f.id == newFolder.id
+          );
           privateFolders[folderIndex] = newFolder;
           setPrivateFolders([...privateFolders]);
         } else {
-          const folderIndex: number = sharedFolders.findIndex(f => f.id == newFolder.id)
+          const folderIndex: number = sharedFolders.findIndex(
+            (f) => f.id == newFolder.id
+          );
           sharedFolders[folderIndex] = newFolder;
           setSharedFolders([...sharedFolders]);
         }
@@ -107,11 +111,16 @@ export default function SubscribeSection({
           className="input input-bordered input-primary w-full"
           onChange={(e) => setNewBlogUrl(e.target.value)}
         />
-        <button className="btn btn-square btn-secondary" onClick={addBlog}>+</button>
+        <button className="btn btn-square btn-secondary" onClick={addBlog}>
+          +
+        </button>
       </div>
       <div className="flex flex-col">
         <div className="border-2 border-success bg-green-50 rounded-box gap-2">
-          {folder && folder.blogs.map((blog: Blog, index: number) => <BlogBox key={index} blog={blog} />)}
+          {folder &&
+            folder.blogs.map((blog: Blog, index: number) => (
+              <BlogBox key={index} blog={blog} />
+            ))}
         </div>
       </div>
     </div>
