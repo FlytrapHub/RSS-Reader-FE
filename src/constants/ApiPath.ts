@@ -17,5 +17,8 @@ export const API_PATH = {
   FOLDER: {
     GET_ALL: "/folders",
     ADD: "/folders",
+    MEMBER: {
+      ADD: (folderId: number) => `/folders/${folderId}/members`,
+    },
   },
 };
