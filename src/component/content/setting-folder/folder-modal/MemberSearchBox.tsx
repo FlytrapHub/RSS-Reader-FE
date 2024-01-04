@@ -2,12 +2,13 @@ import { InvitedMember } from "../../../layout/sidebar/SideBarType";
 
 type Props = {
   member: InvitedMember;
+  addMember: (inviteeId: number) => void;
 };
 
-export default function MemberSearchBox({ member }: Props) {
+export default function MemberSearchBox({ member, addMember }: Props) {
   return (
     <li>
-      <a>
+      <a onClick={() => addMember(member.id)}>
         <div className="avatar">
           <div className="w-8 rounded-full">
             <img src={member.profile} />
