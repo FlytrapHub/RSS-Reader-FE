@@ -3,6 +3,7 @@ import { Folder, InvitedMember } from "../../../layout/sidebar/SideBarType";
 import MemberBox from "./MemberBox";
 import { API_PATH } from "../../../../constants/ApiPath";
 import { useState } from "react";
+import MemberSearchList from "./MemberSearchList";
 
 type Props = {
   folder?: Folder;
@@ -20,6 +21,8 @@ export default function MemberSection({
   setSharedFolders,
 }: Props) {
   const [newMemberName, setNewMemberName] = useState<string>("");
+  const [memberDropDownView, setMemberDropDownView] = useState<boolean>(false);
+  const [searchedMembers, setSearchedMembers] = useState<InvitedMember[]>([]);
 
   const isNewMemberNameEmpty = (): boolean => {
     return newMemberName !== undefined && newMemberName !== "";
@@ -50,6 +53,33 @@ export default function MemberSection({
   // const findMembersByName = () => {
   //
   // }
+  const searchMembers = (memberName: string) => {
+    setNewMemberName(memberName);
+
+    axios.get(
+      import.meta.env.VITE_BASE_URL +
+        API_PATH.MEMBER.GET_ALL_BY_NAME(memberName),
+      { withCredentials: true }
+    )
+    .then(function (response) {
+      if (response.status != 200) {
+        return;
+      }
+
+      const responseData: InvitedMember[] = response.data.data.memberSummary;
+      setSearchedMembers(responseData);
+
+      if (responseData.length == 0) {
+        setMemberDropDownView(false);
+      } else {
+        setMemberDropDownView(true);
+      }
+
+    })
+    .catch(function (error) {
+      console.log("error: {}", error);
+    });
+  };
 
   const addMember = () => {
     if (folder == undefined) {
@@ -91,14 +121,14 @@ export default function MemberSection({
           blogs: folder.blogs,
           invitedMembers: folder.invitedMembers,
         };
-        
+
         if (newFolder.invitedMembers.length == 1) {
           // [조건] 멤버를 추가했더니 멤버 수가 1인 경우(처음으로 멤버가 추가된 경우)
           // [행동] folder가 privateFolders에서 sharedFolders로 이동되여햐 한다
           // privateFolders에서 newFolder 제거
           privateFolders = privateFolders.filter((f) => f.id !== newFolder.id);
           setPrivateFolders([...privateFolders]);
-        
+
           // sharedFolders에 newFolder 추가
           setSharedFolders([...sharedFolders, newFolder]);
         } else if (newFolder.invitedMembers.length >= 2) {
@@ -112,7 +142,7 @@ export default function MemberSection({
           setSharedFolders([...sharedFolders]);
         }
 
-        setNewMemberName('')
+        setNewMemberName("");
       })
       .catch(function (error) {
         console.log("error: {}", error);
@@ -122,22 +152,29 @@ export default function MemberSection({
   return (
     <div className="md:w-2/5 w-full">
       <h1 className="text-left text-lg font-bold mt-4 px-2">멤버 관리</h1>
-      <div className="flex gap-1  mb-4">
-        <input
-          type="text"
-          placeholder="추가할 폴더 이름을 입력해주세요."
-          className="input input-bordered input-primary w-full"
-          value={newMemberName}
-          onChange={(e) => setNewMemberName(e.target.value)}
-        />
-        <button className="btn btn-square btn-secondary" onClick={addMember}>+</button>
+      <div className="mb-4">
+        <div className="flex gap-1">
+          <input
+            type="text"
+            placeholder="추가할 폴더 이름을 입력해주세요."
+            className="input input-bordered input-primary w-full"
+            value={newMemberName}
+            onChange={(e) => searchMembers(e.target.value)}
+          />
+          <button className="btn btn-square btn-secondary" onClick={addMember}>
+            +
+          </button>
+        </div>
+        {memberDropDownView && <MemberSearchList members={searchedMembers} />}
       </div>
       <div className="flex flex-col">
         <div className="border-2 border-success bg-green-50 rounded-box gap-2">
           {folder &&
-            folder.invitedMembers.map((member: InvitedMember, index: number) => (
-              <MemberBox key={index} member={member} />
-            ))}
+            folder.invitedMembers.map(
+              (member: InvitedMember, index: number) => (
+                <MemberBox key={index} member={member} />
+              )
+            )}
         </div>
       </div>
     </div>
