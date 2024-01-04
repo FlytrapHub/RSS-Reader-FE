@@ -81,7 +81,7 @@ export default function MemberSection({
     });
   };
 
-  const addMember = () => {
+  const addMember = (inviteeId: number) => {
     if (folder == undefined) {
       console.log("folder 정보가 없습니다.");
       return;
@@ -95,7 +95,7 @@ export default function MemberSection({
       .post(
         import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.MEMBER.ADD(folder.id),
         {
-          inviteeId: newMemberName,
+          inviteeId: inviteeId,
         },
         {
           withCredentials: true,
@@ -143,9 +143,12 @@ export default function MemberSection({
         }
 
         setNewMemberName("");
+        setMemberDropDownView(false);
+        setSearchedMembers([]);
       })
       .catch(function (error) {
         console.log("error: {}", error);
+        alert(error.response.data.message)
       });
   };
 
@@ -161,11 +164,8 @@ export default function MemberSection({
             value={newMemberName}
             onChange={(e) => searchMembers(e.target.value)}
           />
-          <button className="btn btn-square btn-secondary" onClick={addMember}>
-            +
-          </button>
         </div>
-        {memberDropDownView && <MemberSearchList members={searchedMembers} />}
+        {memberDropDownView && <MemberSearchList members={searchedMembers} addMember={addMember} />}
       </div>
       <div className="flex flex-col">
         <div className="border-2 border-success bg-green-50 rounded-box gap-2">
