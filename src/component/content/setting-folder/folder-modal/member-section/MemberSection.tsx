@@ -184,12 +184,16 @@ export default function MemberSection({
         setFolder(newFolder);
 
         if (newFolder.invitedMembers.length == 0) {
-          const folderIndex: number = privateFolders.findIndex(
-            (f) => f.id == newFolder.id
-          );
-          privateFolders[folderIndex] = newFolder;
+          // [상황] 멤버 삭제 후 폴더에 남은 멤버 수가 0인 경우
+          // [액션] sharedFolders에서 기존 폴더 제거 후 privateFolder에 새폴더를 추가한다
+          sharedFolders = sharedFolders.filter((f) => f.id !== newFolder.id);
+          setSharedFolders([...sharedFolders]);
+
+          privateFolders.push(newFolder);
           setPrivateFolders([...privateFolders]);
         } else {
+          // [상황] 멤버를 삭제한 후에도 여전히 멤버가 남아있는 경우
+          // [액션]] sharedFolder에서 기존 폴더와 새 폴더를 교체
           const folderIndex: number = sharedFolders.findIndex(
             (f) => f.id == newFolder.id
           );
