@@ -105,6 +105,7 @@ export default function FolderSettingCard({
           isFolderModalOpen={isFolderModalOpen}
           setIsFolderModalOpen={setIsFolderModalOpen}
           folder={folderForModal}
+          setFolder={setFolderForModal}
           privateFolders={privateFolders}
           setPrivateFolders={setPrivateFolders}
           sharedFolders={sharedFolders}

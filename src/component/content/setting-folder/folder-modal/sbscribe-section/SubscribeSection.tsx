@@ -6,6 +6,7 @@ import { useState } from "react";
 
 type Props = {
   folder?: Folder;
+  setFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>;
   privateFolders: Folder[];
   setPrivateFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
   sharedFolders: Folder[];
@@ -14,12 +15,12 @@ type Props = {
 
 export default function SubscribeSection({
   folder,
+  setFolder,
   privateFolders,
   setPrivateFolders,
   sharedFolders,
   setSharedFolders,
 }: Props) {
-  const [currentFolder, setCurrentFolder] = useState<Folder | undefined>(folder);
   const [newBlogUrl, setNewBlogUrl] = useState<string>("");
 
   const isBlogUrlEmpty = (): boolean => {
@@ -43,7 +44,7 @@ export default function SubscribeSection({
   };
 
   const addBlog = () => {
-    if (currentFolder == undefined) {
+    if (folder == undefined) {
       console.log("folder 정보가 없습니다.");
       return;
     }
@@ -54,7 +55,7 @@ export default function SubscribeSection({
 
     axios
       .post(
-        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.SUBSCRIBE.ADD(currentFolder.id),
+        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.SUBSCRIBE.ADD(folder.id),
         {
           blogUrl: newBlogUrl,
         },
@@ -73,14 +74,14 @@ export default function SubscribeSection({
           title: responseData.subscribeTitle,
           unreadCount: responseData.unreadCount,
         };
-        currentFolder.blogs.push(newBlog);
+        folder.blogs.push(newBlog);
 
         const newFolder: Folder = {
-          id: currentFolder.id,
-          name: currentFolder.name,
-          unreadCount: currentFolder.unreadCount,
-          blogs: currentFolder.blogs,
-          invitedMembers: currentFolder.invitedMembers,
+          id: folder.id,
+          name: folder.name,
+          unreadCount: folder.unreadCount,
+          blogs: folder.blogs,
+          invitedMembers: folder.invitedMembers,
         };
 
         if (newFolder.invitedMembers.length == 0) {
@@ -105,14 +106,14 @@ export default function SubscribeSection({
   const deleteBlog = (folderSubscribeId: number) => {
     if (!confirm('해당 블로그를 삭제하시겠습니까?')) return;
 
-    if (currentFolder == undefined) {
+    if (folder == undefined) {
       console.log("folder 정보가 없습니다.");
       return;
     }
 
     axios
       .delete(
-        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.SUBSCRIBE.DELETE(currentFolder.id, folderSubscribeId),
+        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.SUBSCRIBE.DELETE(folder.id, folderSubscribeId),
         {
           withCredentials: true,
         })
@@ -121,15 +122,15 @@ export default function SubscribeSection({
           return;
         }
 
-        const newBlogs: Blog[] = currentFolder.blogs.filter((blog) => blog.id !== folderSubscribeId);
+        const newBlogs: Blog[] = folder.blogs.filter((blog) => blog.id !== folderSubscribeId);
         const newFolder: Folder = {
-          id: currentFolder.id,
-          name: currentFolder.name,
-          unreadCount: currentFolder.unreadCount,
+          id: folder.id,
+          name: folder.name,
+          unreadCount: folder.unreadCount,
           blogs: newBlogs,
-          invitedMembers: currentFolder.invitedMembers,
+          invitedMembers: folder.invitedMembers,
         }
-        setCurrentFolder(newFolder);
+        setFolder(newFolder);
 
         if (newFolder.invitedMembers.length == 0) {
           const folderIndex: number = privateFolders.findIndex(
@@ -166,8 +167,8 @@ export default function SubscribeSection({
       </div>
       <div className="flex flex-col">
         <div className="border-2 border-success bg-green-50 rounded-box gap-2">
-          {currentFolder &&
-            currentFolder.blogs.map((blog: Blog, index: number) => (
+          {folder &&
+            folder.blogs.map((blog: Blog, index: number) => (
               <BlogBox key={index} blog={blog} deleteHandler={deleteBlog} />
             ))}
         </div>

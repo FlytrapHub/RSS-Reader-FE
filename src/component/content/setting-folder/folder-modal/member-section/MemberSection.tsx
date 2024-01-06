@@ -7,6 +7,7 @@ import MemberSearchList from "./MemberSearchList";
 
 type Props = {
   folder?: Folder;
+  setFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>;
   privateFolders: Folder[];
   setPrivateFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
   sharedFolders: Folder[];
@@ -15,6 +16,7 @@ type Props = {
 
 export default function MemberSection({
   folder,
+  setFolder,
   privateFolders,
   setPrivateFolders,
   sharedFolders,
@@ -152,6 +154,58 @@ export default function MemberSection({
       });
   };
 
+  const deleteMember = (memberId: number) => {
+    if (!confirm('해당 멤버를 추방하시겠습니까?')) return;
+
+    if (folder == undefined) {
+      console.log("folder 정보가 없습니다.");
+      return;
+    }
+
+    axios
+      .delete(
+        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.MEMBER.DELETE(folder.id, memberId),
+        {
+          withCredentials: true,
+        })
+      .then(function (response) {
+        if (response.status != 200) {
+          return;
+        }
+
+        const newInvitedMembers: InvitedMember[] = folder.invitedMembers.filter((member) => member.id !== memberId);
+        const newFolder: Folder = {
+          id: folder.id,
+          name: folder.name,
+          unreadCount: folder.unreadCount,
+          blogs: folder.blogs,
+          invitedMembers: newInvitedMembers,
+        }
+        setFolder(newFolder);
+
+        if (newFolder.invitedMembers.length == 0) {
+          // [상황] 멤버 삭제 후 폴더에 남은 멤버 수가 0인 경우
+          // [액션] sharedFolders에서 기존 폴더 제거 후 privateFolder에 새폴더를 추가한다
+          sharedFolders = sharedFolders.filter((f) => f.id !== newFolder.id);
+          setSharedFolders([...sharedFolders]);
+
+          privateFolders.push(newFolder);
+          setPrivateFolders([...privateFolders]);
+        } else {
+          // [상황] 멤버를 삭제한 후에도 여전히 멤버가 남아있는 경우
+          // [액션]] sharedFolder에서 기존 폴더와 새 폴더를 교체
+          const folderIndex: number = sharedFolders.findIndex(
+            (f) => f.id == newFolder.id
+          );
+          sharedFolders[folderIndex] = newFolder;
+          setSharedFolders([...sharedFolders]);
+        }
+      })
+      .catch(function (error) {
+        alert(error.response.data.message);
+      });
+  }
+
   const closeMemberDroupDownView = () => {
     setNewMemberName("");
     setMemberDropDownView(false);
@@ -186,7 +240,7 @@ export default function MemberSection({
           {folder &&
             folder.invitedMembers.map(
               (member: InvitedMember, index: number) => (
-                <MemberBox key={index} member={member} />
+                <MemberBox key={index} member={member} deleteHandler={deleteMember} />
               )
             )}
         </div>
