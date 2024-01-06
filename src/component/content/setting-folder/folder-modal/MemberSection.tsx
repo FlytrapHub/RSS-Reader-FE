@@ -56,29 +56,29 @@ export default function MemberSection({
   const searchMembers = (memberName: string) => {
     setNewMemberName(memberName);
 
-    axios.get(
-      import.meta.env.VITE_BASE_URL +
-        API_PATH.MEMBER.GET_ALL_BY_NAME(memberName),
-      { withCredentials: true }
-    )
-    .then(function (response) {
-      if (response.status != 200) {
-        return;
-      }
+    axios
+      .get(
+        import.meta.env.VITE_BASE_URL +
+          API_PATH.MEMBER.GET_ALL_BY_NAME(memberName),
+        { withCredentials: true }
+      )
+      .then(function (response) {
+        if (response.status != 200) {
+          return;
+        }
 
-      const responseData: InvitedMember[] = response.data.data.memberSummary;
-      setSearchedMembers(responseData);
+        const responseData: InvitedMember[] = response.data.data.memberSummary;
+        setSearchedMembers(responseData);
 
-      if (responseData.length == 0) {
-        setMemberDropDownView(false);
-      } else {
-        setMemberDropDownView(true);
-      }
-
-    })
-    .catch(function (error) {
-      console.log("error: {}", error);
-    });
+        if (responseData.length == 0) {
+          setMemberDropDownView(false);
+        } else {
+          setMemberDropDownView(true);
+        }
+      })
+      .catch(function (error) {
+        console.log("error: {}", error);
+      });
   };
 
   const addMember = (inviteeId: number) => {
@@ -148,15 +148,21 @@ export default function MemberSection({
       })
       .catch(function (error) {
         console.log("error: {}", error);
-        alert(error.response.data.message)
+        alert(error.response.data.message);
       });
+  };
+
+  const closeMemberDroupDownView = () => {
+    setNewMemberName("");
+    setMemberDropDownView(false);
+    setSearchedMembers([]);
   };
 
   return (
     <div className="md:w-2/5 w-full">
       <h1 className="text-left text-lg font-bold mt-4 px-2">멤버 관리</h1>
       <div className="mb-4">
-        <div className="flex gap-1">
+        <div className="flex gap-1 relative">
           <input
             type="text"
             placeholder="추가할 폴더 이름을 입력해주세요."
@@ -164,8 +170,16 @@ export default function MemberSection({
             value={newMemberName}
             onChange={(e) => searchMembers(e.target.value)}
           />
+          <span
+            className="absolute right-1 cursor-pointer top-1/4 right-3 text-slate-400 hover:text-black"
+            onClick={closeMemberDroupDownView}
+          >
+            &#10006;
+          </span>
         </div>
-        {memberDropDownView && <MemberSearchList members={searchedMembers} addMember={addMember} />}
+        {memberDropDownView && (
+          <MemberSearchList members={searchedMembers} addMember={addMember} />
+        )}
       </div>
       <div className="flex flex-col">
         <div className="border-2 border-success bg-green-50 rounded-box gap-2">
