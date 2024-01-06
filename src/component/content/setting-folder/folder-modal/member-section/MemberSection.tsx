@@ -7,6 +7,7 @@ import MemberSearchList from "./MemberSearchList";
 
 type Props = {
   folder?: Folder;
+  setFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>;
   privateFolders: Folder[];
   setPrivateFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
   sharedFolders: Folder[];
@@ -15,6 +16,7 @@ type Props = {
 
 export default function MemberSection({
   folder,
+  setFolder,
   privateFolders,
   setPrivateFolders,
   sharedFolders,
@@ -186,7 +188,7 @@ export default function MemberSection({
           {folder &&
             folder.invitedMembers.map(
               (member: InvitedMember, index: number) => (
-                <MemberBox key={index} member={member} />
+                <MemberBox key={index} member={member} deleteHandler={deleteMember} />
               )
             )}
         </div>

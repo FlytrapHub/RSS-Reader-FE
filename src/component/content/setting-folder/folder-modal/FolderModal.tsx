@@ -7,6 +7,7 @@ type Props = {
   isFolderModalOpen: boolean;
   setIsFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   folder?: Folder;
+  setFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>;
   privateFolders: Folder[];
   setPrivateFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
   sharedFolders: Folder[];
@@ -17,6 +18,7 @@ export default function FolderModal({
   isFolderModalOpen,
   setIsFolderModalOpen,
   folder,
+  setFolder,
   privateFolders,
   setPrivateFolders,
   sharedFolders,
@@ -44,6 +46,7 @@ export default function FolderModal({
           <div className="flex md:flex-row flex-col gap-2">
             <SubscribeSection
               folder={folder}
+              setFolder={setFolder}
               privateFolders={privateFolders}
               setPrivateFolders={setPrivateFolders}
               sharedFolders={sharedFolders}
@@ -51,6 +54,7 @@ export default function FolderModal({
             />
             <MemberSection
               folder={folder}
+              setFolder={setFolder}
               privateFolders={privateFolders}
               setPrivateFolders={setPrivateFolders}
               sharedFolders={sharedFolders}
