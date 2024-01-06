@@ -154,6 +154,54 @@ export default function MemberSection({
       });
   };
 
+  const deleteMember = (memberId: number) => {
+    if (!confirm('해당 멤버를 추방하시겠습니까?')) return;
+
+    if (folder == undefined) {
+      console.log("folder 정보가 없습니다.");
+      return;
+    }
+
+    axios
+      .delete(
+        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.MEMBER.DELETE(folder.id, memberId),
+        {
+          withCredentials: true,
+        })
+      .then(function (response) {
+        if (response.status != 200) {
+          return;
+        }
+
+        const newInvitedMembers: InvitedMember[] = folder.invitedMembers.filter((member) => member.id !== memberId);
+        const newFolder: Folder = {
+          id: folder.id,
+          name: folder.name,
+          unreadCount: folder.unreadCount,
+          blogs: folder.blogs,
+          invitedMembers: newInvitedMembers,
+        }
+        setFolder(newFolder);
+
+        if (newFolder.invitedMembers.length == 0) {
+          const folderIndex: number = privateFolders.findIndex(
+            (f) => f.id == newFolder.id
+          );
+          privateFolders[folderIndex] = newFolder;
+          setPrivateFolders([...privateFolders]);
+        } else {
+          const folderIndex: number = sharedFolders.findIndex(
+            (f) => f.id == newFolder.id
+          );
+          sharedFolders[folderIndex] = newFolder;
+          setSharedFolders([...sharedFolders]);
+        }
+      })
+      .catch(function (error) {
+        alert(error.response.data.message);
+      });
+  }
+
   const closeMemberDroupDownView = () => {
     setNewMemberName("");
     setMemberDropDownView(false);

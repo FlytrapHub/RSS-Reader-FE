@@ -18,6 +18,7 @@ export const API_PATH = {
     ADD: "/folders",
     MEMBER: {
       ADD: (folderId: number) => `/folders/${folderId}/members`,
+      DELETE: (folderId: number, memberId: number) => `/folders/${folderId}/members/${memberId}`
     },
     SUBSCRIBE: {
       ADD: (folderId: number) => `/folders/${folderId}/rss`,
