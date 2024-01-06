@@ -4,9 +4,12 @@ import { Blog } from "../../../../layout/sidebar/SideBarType";
 
 type Props = {
   blog: Blog,
+  deleteHandler: (subscribeId: number) => void,
 }
 
-export default function BlogBox({ blog }: Props) {
+export default function BlogBox({ blog, deleteHandler }: Props) {
+
+
   return (
     <div className="h-12 flex items-center hover:bg-success rounded-lg">
       <div className="flex flex-none justify-center w-1/12 mx-3">
@@ -16,7 +19,9 @@ export default function BlogBox({ blog }: Props) {
         <div className="text-lg text-left">{blog.title}</div>
         <div className="text-sm text-left text-gray-400">블로그 주소</div>
       </div>
-      <div className="flex-none w-1/12 flex"></div>
+      <div className="flex flex-none justify-center w-1/12" onClick={() => deleteHandler(blog.id)}>
+        <Icon name="delete_left" size="L" />
+      </div>
     </div>
   );
 }

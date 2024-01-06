@@ -19,6 +19,7 @@ export default function SubscribeSection({
   sharedFolders,
   setSharedFolders,
 }: Props) {
+  const [currentFolder, setCurrentFolder] = useState<Folder | undefined>(folder);
   const [newBlogUrl, setNewBlogUrl] = useState<string>("");
 
   const isBlogUrlEmpty = (): boolean => {
@@ -42,7 +43,7 @@ export default function SubscribeSection({
   };
 
   const addBlog = () => {
-    if (folder == undefined) {
+    if (currentFolder == undefined) {
       console.log("folder 정보가 없습니다.");
       return;
     }
@@ -53,7 +54,7 @@ export default function SubscribeSection({
 
     axios
       .post(
-        import.meta.env.VITE_BASE_URL + API_PATH.SUBSCRIBE.POST.ADD(folder.id),
+        import.meta.env.VITE_BASE_URL + API_PATH.SUBSCRIBE.POST.ADD(currentFolder.id),
         {
           blogUrl: newBlogUrl,
         },
@@ -72,14 +73,14 @@ export default function SubscribeSection({
           title: responseData.subscribeTitle,
           unreadCount: responseData.unreadCount,
         };
-        folder.blogs.push(newBlog);
+        currentFolder.blogs.push(newBlog);
 
         const newFolder: Folder = {
-          id: folder.id,
-          name: folder.name,
-          unreadCount: folder.unreadCount,
-          blogs: folder.blogs,
-          invitedMembers: folder.invitedMembers,
+          id: currentFolder.id,
+          name: currentFolder.name,
+          unreadCount: currentFolder.unreadCount,
+          blogs: currentFolder.blogs,
+          invitedMembers: currentFolder.invitedMembers,
         };
 
         if (newFolder.invitedMembers.length == 0) {
@@ -101,6 +102,54 @@ export default function SubscribeSection({
       });
   };
 
+  const deleteBlog = (folderSubscribeId: number) => {
+    if (!confirm('해당 블로그를 삭제하시겠습니까?')) return;
+
+    if (currentFolder == undefined) {
+      console.log("folder 정보가 없습니다.");
+      return;
+    }
+
+    axios
+      .delete(
+        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.SUBSCRIBE.DELETE(currentFolder.id, folderSubscribeId),
+        {
+          withCredentials: true,
+        })
+      .then(function (response) {
+        if (response.status != 204) {
+          return;
+        }
+
+        const newBlogs: Blog[] = currentFolder.blogs.filter((blog) => blog.id !== folderSubscribeId);
+        const newFolder: Folder = {
+          id: currentFolder.id,
+          name: currentFolder.name,
+          unreadCount: currentFolder.unreadCount,
+          blogs: newBlogs,
+          invitedMembers: currentFolder.invitedMembers,
+        }
+        setCurrentFolder(newFolder);
+
+        if (newFolder.invitedMembers.length == 0) {
+          const folderIndex: number = privateFolders.findIndex(
+            (f) => f.id == newFolder.id
+          );
+          privateFolders[folderIndex] = newFolder;
+          setPrivateFolders([...privateFolders]);
+        } else {
+          const folderIndex: number = sharedFolders.findIndex(
+            (f) => f.id == newFolder.id
+          );
+          sharedFolders[folderIndex] = newFolder;
+          setSharedFolders([...sharedFolders]);
+        }
+      })
+      .catch(function (error) {
+        console.log("error: {}", error);
+      });
+  }
+
   return (
     <div className="md:w-3/5 w-full">
       <h1 className="text-left text-lg font-bold mt-4 px-2">구독 관리</h1>
@@ -117,9 +166,9 @@ export default function SubscribeSection({
       </div>
       <div className="flex flex-col">
         <div className="border-2 border-success bg-green-50 rounded-box gap-2">
-          {folder &&
-            folder.blogs.map((blog: Blog, index: number) => (
-              <BlogBox key={index} blog={blog} />
+          {currentFolder &&
+            currentFolder.blogs.map((blog: Blog, index: number) => (
+              <BlogBox key={index} blog={blog} deleteHandler={deleteBlog} />
             ))}
         </div>
       </div>

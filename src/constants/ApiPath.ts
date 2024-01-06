@@ -20,6 +20,9 @@ export const API_PATH = {
     MEMBER: {
       ADD: (folderId: number) => `/folders/${folderId}/members`,
     },
+    SUBSCRIBE: {
+      DELETE: (folderId: number, folderSubscribeId: number) => `/folders/${folderId}/rss/${folderSubscribeId}`
+    }
   },
   MEMBER: {
     GET_ALL_BY_NAME: (memberName: string) => `/members?name=${memberName}`
