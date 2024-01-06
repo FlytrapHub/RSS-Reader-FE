@@ -54,7 +54,7 @@ export default function SubscribeSection({
 
     axios
       .post(
-        import.meta.env.VITE_BASE_URL + API_PATH.SUBSCRIBE.POST.ADD(currentFolder.id),
+        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.SUBSCRIBE.ADD(currentFolder.id),
         {
           blogUrl: newBlogUrl,
         },

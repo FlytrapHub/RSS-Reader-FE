@@ -11,7 +11,6 @@ export const API_PATH = {
   SUBSCRIBE: {
     POST: {
       GET_ALL: (subscribeId: number) => `/subscribes/${subscribeId}/posts`,
-      ADD: (folderId: number) => `/folders/${folderId}/rss`
     }
   },
   FOLDER: {
@@ -21,6 +20,7 @@ export const API_PATH = {
       ADD: (folderId: number) => `/folders/${folderId}/members`,
     },
     SUBSCRIBE: {
+      ADD: (folderId: number) => `/folders/${folderId}/rss`,
       DELETE: (folderId: number, folderSubscribeId: number) => `/folders/${folderId}/rss/${folderSubscribeId}`
     }
   },
