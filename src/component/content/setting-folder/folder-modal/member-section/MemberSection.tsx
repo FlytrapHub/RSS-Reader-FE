@@ -1,7 +1,7 @@
 import axios from "axios";
-import { Folder, InvitedMember } from "../../../layout/sidebar/SideBarType";
+import { Folder, InvitedMember } from "../../../../layout/sidebar/SideBarType";
 import MemberBox from "./MemberBox";
-import { API_PATH } from "../../../../constants/ApiPath";
+import { API_PATH } from "../../../../../constants/ApiPath";
 import { useState } from "react";
 import MemberSearchList from "./MemberSearchList";
 

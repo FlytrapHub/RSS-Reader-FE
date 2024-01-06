@@ -1,6 +1,6 @@
 import Modal from "react-modal";
-import SubscribeSection from "./SubscribeSection";
-import MemberSection from "./MemberSection";
+import SubscribeSection from "./sbscribe-section/SubscribeSection";
+import MemberSection from "./member-section/MemberSection";
 import { Folder } from "../../../layout/sidebar/SideBarType";
 
 type Props = {

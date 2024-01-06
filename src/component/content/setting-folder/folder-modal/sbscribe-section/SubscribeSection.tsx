@@ -1,6 +1,6 @@
 import axios from "axios";
-import { API_PATH } from "../../../../constants/ApiPath";
-import { Blog, Folder } from "../../../layout/sidebar/SideBarType";
+import { API_PATH } from "../../../../../constants/ApiPath";
+import { Blog, Folder } from "../../../../layout/sidebar/SideBarType";
 import BlogBox from "./BlogBox";
 import { useState } from "react";
 

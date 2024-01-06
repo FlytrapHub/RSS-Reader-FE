@@ -1,5 +1,6 @@
-import { Icon } from "../../../common/Icon";
-import { Blog } from "../../../layout/sidebar/SideBarType";
+import { Icon } from "../../../../common/Icon";
+import { Blog } from "../../../../layout/sidebar/SideBarType";
+
 
 type Props = {
   blog: Blog,
