@@ -4,8 +4,10 @@ import Stack from "../../assets/stack.svg?react";
 import Bookmark from "../../assets/bookmark.svg?react";
 import BookmarkFill from "../../assets/bookmark-fill.svg?react";
 import View from "../../assets/view.svg?react";
-import React from 'react';
+import DeleteLeft from "../../assets/delete-left.svg?react";
+import React from "react";
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const icons = {
   github_mark: GitHubMark,
   folder: Folder,
@@ -13,6 +15,7 @@ export const icons = {
   bookmark: Bookmark,
   bookmarkFill: BookmarkFill,
   view: View,
+  delete_left: DeleteLeft,
 };
 
 type IconProps = {
@@ -25,7 +28,6 @@ export const Icon: React.FC<IconProps> = function ({
   size = "S",
   ...props
 }: IconProps) {
-    
   const IconComponent = icons[name];
   if (!IconComponent) return null;
 
@@ -38,5 +40,5 @@ export const Icon: React.FC<IconProps> = function ({
       ? "24px"
       : "40px";
 
-  return (<IconComponent width={iconSize} height={iconSize} {...props} />);
+  return <IconComponent width={iconSize} height={iconSize} {...props} />;
 };
