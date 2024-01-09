@@ -15,7 +15,11 @@ export default function GitHubCallbackPage() {
     };
 
     axios
-      .post(import.meta.env.VITE_BASE_URL + '/auth/login', body)
+      .post(import.meta.env.VITE_BASE_URL + '/auth/login', 
+      body, 
+      {
+        withCredentials: true
+      })
       .then(function (response) {
         if (response.status == 200) {
             navigate(PATH.MAIN);
