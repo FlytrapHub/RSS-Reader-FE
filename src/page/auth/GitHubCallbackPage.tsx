@@ -3,8 +3,8 @@ import queryString from "query-string";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../constants/Path";
-import { InvitedMember } from "../../component/layout/sidebar/SideBarType";
 import { API_PATH } from "../../constants/ApiPath";
+import { StoredMemberInfo } from "./AuthTYpe";
 
 export default function GitHubCallbackPage() {
 
@@ -24,7 +24,7 @@ export default function GitHubCallbackPage() {
       })
       .then(function (response) {
         if (response.status == 200) {
-            const responseData: InvitedMember = response.data.data;
+            const responseData: StoredMemberInfo = response.data.data;
             localStorage.setItem('MEMBER_INFO', JSON.stringify(responseData));
 
             navigate(PATH.MAIN);
