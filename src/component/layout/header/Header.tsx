@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
 import { Icon } from "../../common/Icon";
 import { InvitedMember } from "../sidebar/SideBarType";
+import axios from "axios";
+import { API_PATH } from "../../../constants/ApiPath";
+import { useNavigate } from "react-router-dom";
+import { PATH } from "../../../constants/Path";
 
 type Props = {
   title: string;
 };
 
 export default function Header({ title }: Props) {
+  const navigate = useNavigate();
   const [memberInfo, setMemberInfo] = useState<InvitedMember | null>(null);
 
   useEffect(() => {
@@ -15,6 +20,22 @@ export default function Header({ title }: Props) {
       setMemberInfo(JSON.parse(storedMemberInfo));
     }
   }, []);
+
+  const logout = () => {
+    axios
+      .post(import.meta.env.VITE_BASE_URL + API_PATH.AUTH.LOGOUT, {
+        withCredentials: true,
+      })
+      .then(function (response) {
+        if (response.status == 204) {
+          localStorage.removeItem('MEMBER_INFO');
+          navigate(PATH.AUTH.LOGIN);
+        }
+      })
+      .catch(function (error) {
+        console.log("error: {}", error);
+      });
+  };
 
   return (
     <div className="navbar">
@@ -52,7 +73,7 @@ export default function Header({ title }: Props) {
               <div className="w-10 rounded-full bg-info"></div>
             )}
           </div>
-          <ul className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52">
+          <ul tabIndex={0} className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-200 rounded-box w-52">
             <li>
               {memberInfo != null ? (
                 <div>Welcome! <span className="font-bold">{memberInfo.name}</span></div>
@@ -61,7 +82,7 @@ export default function Header({ title }: Props) {
               )}
             </li>
             <li>
-              <a>Logout</a>
+              <a onClick={() => logout()}>Logout</a>
             </li>
           </ul>
         </div>
