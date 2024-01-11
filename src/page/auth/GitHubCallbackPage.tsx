@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../constants/Path";
 import { InvitedMember } from "../../component/layout/sidebar/SideBarType";
+import { API_PATH } from "../../constants/ApiPath";
 
 export default function GitHubCallbackPage() {
 
@@ -16,7 +17,7 @@ export default function GitHubCallbackPage() {
     };
 
     axios
-      .post(import.meta.env.VITE_BASE_URL + '/auth/login', 
+      .post(import.meta.env.VITE_BASE_URL + API_PATH.AUTH.LOGIN, 
       body, 
       {
         withCredentials: true

@@ -29,6 +29,8 @@ export const API_PATH = {
     GET_ALL_BY_NAME: (memberName: string) => `/members?name=${memberName}`
   },
   AUTH: {
+    LOGIN: "/auth/login",
     LOGOUT: "/auth/logout",
+    ADMIN_LOGIN: "/admin/login",
   }
 };
