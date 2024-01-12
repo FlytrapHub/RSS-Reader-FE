@@ -1,9 +1,9 @@
-import axios from "axios";
 import { Folder, InvitedMember } from "../../../../layout/sidebar/SideBarType";
 import MemberBox from "./MemberBox";
 import { API_PATH } from "../../../../../constants/ApiPath";
 import { useState } from "react";
 import MemberSearchList from "./MemberSearchList";
+import authAxios from "../../../../../utill/ApiUtills";
 
 type Props = {
   folder?: Folder;
@@ -46,24 +46,11 @@ export default function MemberSection({
     return true;
   };
 
-  // TODO: 이름 or 이메일로 회원을 검색하는 함수 추가하기
-  // TODO: 목록은 DropDown으로 보여준다. 목록에서 회원을 클릭하면 State에 memberId를 set 한다
-  // TODO: memberId가 set 되어 있을 때만 회원 추가 API 요청을 보낼 수 있다.
-  // TODO: memberId 가 set 되어 있는 상태에서 멤버 입력창 값이 변경되면 State에 memberId set을 취소한다
-  // OR
-  // TODO: 회원 목록 DropDown에서 회원을 클릭하면 자동으로 회원 추가 API 요청을 보내도록 한다
-  // const findMembersByName = () => {
-  //
-  // }
   const searchMembers = (memberName: string) => {
     setNewMemberName(memberName);
 
-    axios
-      .get(
-        import.meta.env.VITE_BASE_URL +
-          API_PATH.MEMBER.GET_ALL_BY_NAME(memberName),
-        { withCredentials: true }
-      )
+    authAxios
+      .get(API_PATH.MEMBER.GET_ALL_BY_NAME(memberName))
       .then(function (response) {
         if (response.status != 200) {
           return;
@@ -77,9 +64,6 @@ export default function MemberSection({
         } else {
           setMemberDropDownView(true);
         }
-      })
-      .catch(function (error) {
-        console.log("error: {}", error);
       });
   };
 
@@ -93,14 +77,11 @@ export default function MemberSection({
       return;
     }
 
-    axios
+    authAxios
       .post(
-        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.MEMBER.ADD(folder.id),
+        API_PATH.FOLDER.MEMBER.ADD(folder.id),
         {
           inviteeId: inviteeId,
-        },
-        {
-          withCredentials: true,
         }
       )
       .then(function (response) {
@@ -127,16 +108,12 @@ export default function MemberSection({
         if (newFolder.invitedMembers.length == 1) {
           // [조건] 멤버를 추가했더니 멤버 수가 1인 경우(처음으로 멤버가 추가된 경우)
           // [행동] folder가 privateFolders에서 sharedFolders로 이동되여햐 한다
-          // privateFolders에서 newFolder 제거
           privateFolders = privateFolders.filter((f) => f.id !== newFolder.id);
           setPrivateFolders([...privateFolders]);
-
-          // sharedFolders에 newFolder 추가
           setSharedFolders([...sharedFolders, newFolder]);
         } else if (newFolder.invitedMembers.length >= 2) {
           // [조건] 멤버를 추가했더니 멤수 수가 2 이상인 경우 = 기존에도 멤버가 있던 경우
           // [행동] sharedFolders에 있던 폴더가 멤버 추가된 newFolder로 교체되어야 한다
-          // 기존의 folder를 newFolder로 교체
           const folderIndex: number = sharedFolders.findIndex(
             (f) => f.id == newFolder.id
           );
@@ -149,7 +126,6 @@ export default function MemberSection({
         setSearchedMembers([]);
       })
       .catch(function (error) {
-        console.log("error: {}", error);
         alert(error.response.data.message);
       });
   };
@@ -162,12 +138,8 @@ export default function MemberSection({
       return;
     }
 
-    axios
-      .delete(
-        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.MEMBER.DELETE(folder.id, memberId),
-        {
-          withCredentials: true,
-        })
+    authAxios
+      .delete(API_PATH.FOLDER.MEMBER.DELETE(folder.id, memberId))
       .then(function (response) {
         if (response.status != 200) {
           return;

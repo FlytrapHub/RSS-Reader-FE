@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Post } from "./post/PostType";
-import axios from "axios";
 import { API_PATH } from "../../constants/ApiPath";
 import PostItemList from "./post/PostItemList";
+import authAxios from "../../utill/ApiUtills";
 
 export default function BookmarkListContent() {
 
@@ -17,9 +17,8 @@ export default function BookmarkListContent() {
 
   // api call
   const getAllPosts = async (page: number) => {
-    axios
-      .get(import.meta.env.VITE_BASE_URL + API_PATH.BOOKMARK.GET_ALL, {
-        withCredentials: true,
+    authAxios
+      .get(API_PATH.BOOKMARK.GET_ALL, {
         params: {
           page: page,
         },
@@ -31,9 +30,6 @@ export default function BookmarkListContent() {
         } else {
           throw new Error("Request failed: " + response.status);
         }
-      })
-      .catch(function (error) {
-        console.log("error: {}", error);
       });
   };
 

@@ -1,9 +1,9 @@
 import { Icon } from "../../common/Icon";
-import axios from "axios";
 import { API_PATH } from "../../../constants/ApiPath";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../constants/Path";
 import { StoredMemberInfo } from "../../../page/auth/AuthTYpe";
+import authAxios from "../../../utill/ApiUtills";
 
 type Props = {
   title: string;
@@ -15,19 +15,14 @@ export default function Header({ title, memberInfo, setMemberInfo }: Props) {
   const navigate = useNavigate();
 
   const logout = () => {
-    axios
-      .post(import.meta.env.VITE_BASE_URL + API_PATH.AUTH.LOGOUT, {
-        withCredentials: true,
-      })
+    authAxios
+      .post(API_PATH.AUTH.LOGOUT)
       .then(function (response) {
         if (response.status == 204) {
           localStorage.removeItem('MEMBER_INFO');
           setMemberInfo(null);
           navigate(PATH.AUTH.LOGIN);
         }
-      })
-      .catch(function (error) {
-        console.log("error: {}", error);
       });
   };
 

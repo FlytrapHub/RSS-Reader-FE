@@ -7,11 +7,11 @@ import SubscribePostListContent from "../component/content/SubscribePostListCont
 import { Pages } from "../constants/Pages";
 import FolderSettingContent from "../component/content/FolderSettingContent";
 import { Folder } from "../component/layout/sidebar/SideBarType";
-import axios from "axios";
 import { API_PATH } from "../constants/ApiPath";
 import { PATH } from "../constants/Path";
 import { StoredMemberInfo } from "./auth/AuthTYpe";
 import Header from "../component/layout/header/Header";
+import authAxios from "../utill/ApiUtills";
 
 type Props = {
   page: Pages;
@@ -38,10 +38,8 @@ export default function MainPage({ page }: Props) {
       return;
     }
 
-    axios
-      .get(import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.GET_ALL, {
-        withCredentials: true,
-      })
+    authAxios
+      .get(API_PATH.FOLDER.GET_ALL)
       .then(function (response) {
         if (response.status == 200) {
           const folders = response.data.data.folders;
@@ -50,10 +48,8 @@ export default function MainPage({ page }: Props) {
         } else {
           throw new Error("Request failed: " + response.status);
         }
-      })
-      .catch(function (error) {
-        console.log("error: {}", error);
       });
+
   }, [navigate]);
 
   switch (page) {

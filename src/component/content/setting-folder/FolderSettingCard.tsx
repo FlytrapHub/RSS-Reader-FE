@@ -1,9 +1,9 @@
-import axios from "axios";
 import { Folder } from "../../layout/sidebar/SideBarType";
 import FolderList from "./FolderList";
 import { API_PATH } from "../../../constants/ApiPath";
 import { useState } from "react";
 import FolderModal from "./folder-modal/FolderModal";
+import authAxios from "../../../utill/ApiUtills";
 
 type Props = {
   privateFolders: Folder[],
@@ -47,14 +47,11 @@ export default function FolderSettingCard({
       return;
     }
 
-    axios
+    authAxios
       .post(
-        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.ADD,
+        API_PATH.FOLDER.ADD,
         {
           name: newFolderName,
-        },
-        {
-          withCredentials: true,
         }
       )
       .then(function (response) {
@@ -77,9 +74,6 @@ export default function FolderSettingCard({
         } else {
           throw new Error("Request failed: " + response.status);
         }
-      })
-      .catch(function (error) {
-        console.log("error: {}", error);
       });
   };
 
