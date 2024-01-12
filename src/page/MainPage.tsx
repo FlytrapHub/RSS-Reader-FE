@@ -1,6 +1,6 @@
 import { ReactNode, useEffect, useState } from "react";
 import Layout from "../component/layout/Layout";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AllPostListContent from "../component/content/AllPostListContent";
 import BookmarkListContent from "../component/content/BookmarkListContent";
 import SubscribePostListContent from "../component/content/SubscribePostListContent";
@@ -9,6 +9,9 @@ import FolderSettingContent from "../component/content/FolderSettingContent";
 import { Folder } from "../component/layout/sidebar/SideBarType";
 import axios from "axios";
 import { API_PATH } from "../constants/ApiPath";
+import { PATH } from "../constants/Path";
+import { StoredMemberInfo } from "./auth/AuthTYpe";
+import Header from "../component/layout/header/Header";
 
 type Props = {
   page: Pages;
@@ -22,8 +25,19 @@ export default function MainPage({ page }: Props) {
 
   const [privateFolders, setPrivateFolders] = useState<Folder[]>([]);
   const [sharedFolders, setSharedFolders] = useState<Folder[]>([]);
+  const [memberInfo, setMemberInfo] = useState<StoredMemberInfo | null>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
+    const storedMemberInfo = localStorage.getItem('MEMBER_INFO');
+    if (storedMemberInfo) {
+      setMemberInfo(JSON.parse(storedMemberInfo));
+    } else {
+      navigate(PATH.AUTH.LOGIN);
+      alert('로그인이 필요한 페이지 입니다.');
+      return;
+    }
+
     axios
       .get(import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.GET_ALL, {
         withCredentials: true,
@@ -40,7 +54,7 @@ export default function MainPage({ page }: Props) {
       .catch(function (error) {
         console.log("error: {}", error);
       });
-  }, []);
+  }, [navigate]);
 
   switch (page) {
     case Pages.ALL_POST: {
@@ -76,10 +90,10 @@ export default function MainPage({ page }: Props) {
   return (
     <>
       <Layout
-        headerTitle={headerTitle}
         privateFolders={privateFolders}
         sharedFolders={sharedFolders}
       >
+        <Header title={headerTitle} memberInfo={memberInfo} setMemberInfo={setMemberInfo} />
         {content}
       </Layout>
     </>

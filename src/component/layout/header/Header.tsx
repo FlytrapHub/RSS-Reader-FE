@@ -1,25 +1,18 @@
-import { useEffect, useState } from "react";
 import { Icon } from "../../common/Icon";
-import { InvitedMember } from "../sidebar/SideBarType";
 import axios from "axios";
 import { API_PATH } from "../../../constants/ApiPath";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../constants/Path";
+import { StoredMemberInfo } from "../../../page/auth/AuthTYpe";
 
 type Props = {
   title: string;
+  memberInfo: StoredMemberInfo | null;
+  setMemberInfo: React.Dispatch<React.SetStateAction<StoredMemberInfo | null>>;
 };
 
-export default function Header({ title }: Props) {
+export default function Header({ title, memberInfo, setMemberInfo }: Props) {
   const navigate = useNavigate();
-  const [memberInfo, setMemberInfo] = useState<InvitedMember | null>(null);
-
-  useEffect(() => {
-    const storedMemberInfo = localStorage.getItem("MEMBER_INFO");
-    if (storedMemberInfo) {
-      setMemberInfo(JSON.parse(storedMemberInfo));
-    }
-  }, []);
 
   const logout = () => {
     axios
@@ -29,6 +22,7 @@ export default function Header({ title }: Props) {
       .then(function (response) {
         if (response.status == 204) {
           localStorage.removeItem('MEMBER_INFO');
+          setMemberInfo(null);
           navigate(PATH.AUTH.LOGIN);
         }
       })
