@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Icon } from "../../common/Icon";
 import { Post } from "./PostType";
 import { API_PATH } from "../../../constants/ApiPath";
-import axios from "axios";
+import authAxios from "../../../utill/ApiUtills";
 
 type Props = {
   key: number,
@@ -31,67 +31,44 @@ export default function PostItem({ key, post, setPostForModal }: Props) {
 
   const bookmarkHandler = (postId: number) => {
     if (isBookmark) {
-      axios
-        .delete(
-          import.meta.env.VITE_BASE_URL + API_PATH.BOOKMARK.DELETE(postId),
-          {
-            withCredentials: true,
-          }
-        )
-        .then(function (response) {
-          if (response.status == 200) {
-            setIsBookmark(false);
-          } else {
-            throw new Error("Request failed: " + response.status);
-          }
-        })
-        .catch(function (error) {
-          console.log("error: {}", error);
-        });
+        authAxios
+          .delete(API_PATH.BOOKMARK.DELETE(postId))
+          .then(function (response) {
+            if (response.status == 200) {
+              setIsBookmark(false);
+            } else {
+              throw new Error("Request failed: " + response.status);
+            }
+          });
     } else {
-      axios
-        .post(
-          import.meta.env.VITE_BASE_URL + API_PATH.BOOKMARK.ADD(postId),
-          {},
-          {
-            withCredentials: true,
-          }
-        )
-        .then(function (response) {
-          if (response.status == 201) {
-            setIsBookmark(true);
-          } else {
-            throw new Error("Request failed: " + response.status);
-          }
-        })
-        .catch(function (error) {
-          console.log("error: {}", error);
-        });
+        authAxios
+          .post(API_PATH.BOOKMARK.ADD(postId))
+          .then(function (response) {
+            if (response.status == 201) {
+              setIsBookmark(true);
+            } else {
+              throw new Error("Request failed: " + response.status);
+            }
+          });
     }
   };
 
   const openPostModal = () => {
-    axios
-    .get(
-      import.meta.env.VITE_BASE_URL + API_PATH.POST.GET(post.id),
-      {
-        withCredentials: true,
-      }
-    )
-    .then(function (response) {
-      if (response.status == 200) {
-        const responsePost: Post = response.data.data;
-        setIsOpen(true);
-        setPostForModal(responsePost);
-      } else {
+    authAxios
+      .get(API_PATH.POST.GET(post.id))
+      .then(function (response) {
+        if (response.status == 200) {
+          const responsePost: Post = response.data.data;
+          setIsOpen(true);
+          setPostForModal(responsePost);
+        } else {
+          setPostForModal(undefined);
+          throw new Error("Request failed: " + response.status);
+        }
+      })
+      .catch(() => {
         setPostForModal(undefined);
-        throw new Error("Request failed: " + response.status);
-      }
-    })
-    .catch(function (error) {
-      setPostForModal(undefined);
-      console.log("error: {}", error);
-    });
+      });
   };
 
   return (

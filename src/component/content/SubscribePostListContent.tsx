@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Post } from "./post/PostType";
-import axios from "axios";
 import { API_PATH } from "../../constants/ApiPath";
 import PostItemList from "./post/PostItemList";
+import authAxios from "../../utill/ApiUtills";
 
 type Props = {
   subscribeId: number,
@@ -21,9 +21,8 @@ export default function SubscribePostListContent({subscribeId}: Props) {
 
   // api call
   const getAllPosts = async (page: number) => {
-    axios
-      .get(import.meta.env.VITE_BASE_URL + API_PATH.SUBSCRIBE.POST.GET_ALL(subscribeId), {
-        withCredentials: true,
+    authAxios
+      .get(API_PATH.SUBSCRIBE.POST.GET_ALL(subscribeId), {
         params: {
           page: page,
         },
@@ -35,9 +34,6 @@ export default function SubscribePostListContent({subscribeId}: Props) {
         } else {
           throw new Error("Request failed: " + response.status);
         }
-      })
-      .catch(function (error) {
-        console.log("error: {}", error);
       });
   };
 

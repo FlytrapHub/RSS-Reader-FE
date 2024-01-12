@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Post } from "./post/PostType";
-import axios from "axios";
 import { API_PATH } from "../../constants/ApiPath";
 import PostItemList from "./post/PostItemList";
+import authAxios from "../../utill/ApiUtills";
 
 export default function AllPostListContent() {
 
@@ -15,11 +15,9 @@ export default function AllPostListContent() {
     getAllPosts(0);
   }, []);
 
-  // api call
   const getAllPosts = async (page: number) => {
-    axios
-      .get(import.meta.env.VITE_BASE_URL + API_PATH.POST.GET_ALL, {
-        withCredentials: true,
+    authAxios
+      .get(API_PATH.POST.GET_ALL, {
         params: {
           page: page,
         },
@@ -31,9 +29,6 @@ export default function AllPostListContent() {
         } else {
           throw new Error("Request failed: " + response.status);
         }
-      })
-      .catch(function (error) {
-        console.log("error: {}", error);
       });
   };
 

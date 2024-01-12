@@ -1,8 +1,8 @@
-import axios from "axios";
 import { API_PATH } from "../../../../../constants/ApiPath";
 import { Blog, Folder } from "../../../../layout/sidebar/SideBarType";
 import BlogBox from "./BlogBox";
 import { useState } from "react";
+import authAxios from "../../../../../utill/ApiUtills";
 
 type Props = {
   folder?: Folder;
@@ -53,14 +53,11 @@ export default function SubscribeSection({
       return;
     }
 
-    axios
+    authAxios
       .post(
-        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.SUBSCRIBE.ADD(folder.id),
+        API_PATH.FOLDER.SUBSCRIBE.ADD(folder.id),
         {
           blogUrl: newBlogUrl,
-        },
-        {
-          withCredentials: true,
         }
       )
       .then(function (response) {
@@ -98,9 +95,6 @@ export default function SubscribeSection({
           setSharedFolders([...sharedFolders]);
         }
       })
-      .catch(function (error) {
-        console.log("error: {}", error);
-      });
   };
 
   const deleteBlog = (folderSubscribeId: number) => {
@@ -111,12 +105,8 @@ export default function SubscribeSection({
       return;
     }
 
-    axios
-      .delete(
-        import.meta.env.VITE_BASE_URL + API_PATH.FOLDER.SUBSCRIBE.DELETE(folder.id, folderSubscribeId),
-        {
-          withCredentials: true,
-        })
+    authAxios
+      .delete(API_PATH.FOLDER.SUBSCRIBE.DELETE(folder.id, folderSubscribeId))
       .then(function (response) {
         if (response.status != 204) {
           return;
@@ -145,9 +135,6 @@ export default function SubscribeSection({
           sharedFolders[folderIndex] = newFolder;
           setSharedFolders([...sharedFolders]);
         }
-      })
-      .catch(function (error) {
-        console.log("error: {}", error);
       });
   }
 
