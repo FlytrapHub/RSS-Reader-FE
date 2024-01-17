@@ -3,24 +3,15 @@ import { Blog, Folder } from "../../../../layout/sidebar/SideBarType";
 import BlogBox from "./BlogBox";
 import { useState } from "react";
 import authAxios from "../../../../../utill/ApiUtills";
+import { useFoldersStore } from "../../../../../store/store";
 
 type Props = {
   folder?: Folder;
   setFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>;
-  privateFolders: Folder[];
-  setPrivateFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
-  sharedFolders: Folder[];
-  setSharedFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
 };
 
-export default function SubscribeSection({
-  folder,
-  setFolder,
-  privateFolders,
-  setPrivateFolders,
-  sharedFolders,
-  setSharedFolders,
-}: Props) {
+export default function SubscribeSection({ folder, setFolder }: Props) {
+  const { updateFolder } = useFoldersStore();
   const [newBlogUrl, setNewBlogUrl] = useState<string>("");
 
   const isBlogUrlEmpty = (): boolean => {
@@ -54,12 +45,9 @@ export default function SubscribeSection({
     }
 
     authAxios
-      .post(
-        API_PATH.FOLDER.SUBSCRIBE.ADD(folder.id),
-        {
-          blogUrl: newBlogUrl,
-        }
-      )
+      .post(API_PATH.FOLDER.SUBSCRIBE.ADD(folder.id), {
+        blogUrl: newBlogUrl,
+      })
       .then(function (response) {
         if (response.status != 201) {
           return;
@@ -81,24 +69,12 @@ export default function SubscribeSection({
           invitedMembers: folder.invitedMembers,
         };
 
-        if (newFolder.invitedMembers.length == 0) {
-          const folderIndex: number = privateFolders.findIndex(
-            (f) => f.id == newFolder.id
-          );
-          privateFolders[folderIndex] = newFolder;
-          setPrivateFolders([...privateFolders]);
-        } else {
-          const folderIndex: number = sharedFolders.findIndex(
-            (f) => f.id == newFolder.id
-          );
-          sharedFolders[folderIndex] = newFolder;
-          setSharedFolders([...sharedFolders]);
-        }
-      })
+        updateFolder(newFolder);
+      });
   };
 
   const deleteBlog = (folderSubscribeId: number) => {
-    if (!confirm('해당 블로그를 삭제하시겠습니까?')) return;
+    if (!confirm("해당 블로그를 삭제하시겠습니까?")) return;
 
     if (folder == undefined) {
       console.log("folder 정보가 없습니다.");
@@ -112,31 +88,21 @@ export default function SubscribeSection({
           return;
         }
 
-        const newBlogs: Blog[] = folder.blogs.filter((blog) => blog.id !== folderSubscribeId);
+        const newBlogs: Blog[] = folder.blogs.filter(
+          (blog) => blog.id !== folderSubscribeId
+        );
         const newFolder: Folder = {
           id: folder.id,
           name: folder.name,
           unreadCount: folder.unreadCount,
           blogs: newBlogs,
           invitedMembers: folder.invitedMembers,
-        }
+        };
         setFolder(newFolder);
 
-        if (newFolder.invitedMembers.length == 0) {
-          const folderIndex: number = privateFolders.findIndex(
-            (f) => f.id == newFolder.id
-          );
-          privateFolders[folderIndex] = newFolder;
-          setPrivateFolders([...privateFolders]);
-        } else {
-          const folderIndex: number = sharedFolders.findIndex(
-            (f) => f.id == newFolder.id
-          );
-          sharedFolders[folderIndex] = newFolder;
-          setSharedFolders([...sharedFolders]);
-        }
+        updateFolder(newFolder);
       });
-  }
+  };
 
   return (
     <div className="md:w-3/5 w-full">

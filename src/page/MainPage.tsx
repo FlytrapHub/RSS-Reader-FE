@@ -6,12 +6,12 @@ import BookmarkListContent from "../component/content/BookmarkListContent";
 import SubscribePostListContent from "../component/content/SubscribePostListContent";
 import { Pages } from "../constants/Pages";
 import FolderSettingContent from "../component/content/FolderSettingContent";
-import { Folder } from "../component/layout/sidebar/SideBarType";
 import { API_PATH } from "../constants/ApiPath";
 import { PATH } from "../constants/Path";
 import { StoredMemberInfo } from "./auth/AuthTYpe";
 import Header from "../component/layout/header/Header";
 import authAxios from "../utill/ApiUtills";
+import { useFoldersStore } from "../store/store";
 
 type Props = {
   page: Pages;
@@ -23,8 +23,7 @@ export default function MainPage({ page }: Props) {
   let content: ReactNode;
   let key: number = 0;
 
-  const [privateFolders, setPrivateFolders] = useState<Folder[]>([]);
-  const [sharedFolders, setSharedFolders] = useState<Folder[]>([]);
+  const { setPrivateFolders, setSharedFolders } = useFoldersStore();
   const [memberInfo, setMemberInfo] = useState<StoredMemberInfo | null>(null);
   const navigate = useNavigate();
 
@@ -50,7 +49,7 @@ export default function MainPage({ page }: Props) {
         }
       });
 
-  }, [navigate]);
+  }, [navigate, setPrivateFolders, setSharedFolders]);
 
   switch (page) {
     case Pages.ALL_POST: {
@@ -72,12 +71,7 @@ export default function MainPage({ page }: Props) {
     }
     case Pages.SET_FOLDERS: {
       content = (
-        <FolderSettingContent
-          privateFolders={privateFolders}
-          setPrivateFolders={setPrivateFolders}
-          sharedFolders={sharedFolders}
-          setSharedFolders={setSharedFolders}
-        />
+        <FolderSettingContent />
       );
       break;
     }
@@ -85,10 +79,7 @@ export default function MainPage({ page }: Props) {
 
   return (
     <>
-      <Layout
-        privateFolders={privateFolders}
-        sharedFolders={sharedFolders}
-      >
+      <Layout>
         <Header title={headerTitle} memberInfo={memberInfo} setMemberInfo={setMemberInfo} />
         {content}
       </Layout>

@@ -1,18 +1,11 @@
 import { ReactNode } from "react";
 import SideBar from "./sidebar/SideBar";
-import { Folder } from "./sidebar/SideBarType";
 
 type Props = {
   children: ReactNode;
-  privateFolders: Folder[],
-  sharedFolders: Folder[],
 };
 
-export default function Layout({
-  children,
-  privateFolders,
-  sharedFolders,
-}: Props) {
+export default function Layout({ children }: Props) {
   return (
     <div className="drawer lg:drawer-open">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -23,10 +16,7 @@ export default function Layout({
       </div>
 
       <div className="drawer-side">
-        <SideBar
-          privateFolders={privateFolders}
-          sharedFolders={sharedFolders}
-        />
+        <SideBar />
       </div>
     </div>
   );

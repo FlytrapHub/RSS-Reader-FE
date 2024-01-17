@@ -4,20 +4,10 @@ import { API_PATH } from "../../../constants/ApiPath";
 import { useState } from "react";
 import FolderModal from "./folder-modal/FolderModal";
 import authAxios from "../../../utill/ApiUtills";
+import { useFoldersStore } from "../../../store/store";
 
-type Props = {
-  privateFolders: Folder[],
-  setPrivateFolders: React.Dispatch<React.SetStateAction<Folder[]>>,
-  sharedFolders: Folder[],
-  setSharedFolders: React.Dispatch<React.SetStateAction<Folder[]>>,
-};
-
-export default function FolderSettingCard({
-  privateFolders,
-  setPrivateFolders,
-  sharedFolders,
-  setSharedFolders,
-}: Props) {
+export default function FolderSettingCard() {
+  const { privateFolders, sharedFolders, addFolderToPrivateFolders } = useFoldersStore();
   const [newFolderName, setNewFolderName] = useState<string>("");
   const [isFolderModalOpen, setIsFolderModalOpen] = useState<boolean>(false);
   const [folderForModal, setFolderForModal] = useState<Folder | undefined>();
@@ -66,11 +56,7 @@ export default function FolderSettingCard({
             invitedMembers: [],
           };
 
-          const updatedPrivateFolders = [...privateFolders, newFolder];
-          const updatedSharedFolders = [...sharedFolders]; // TODO: 폴더 공유 설정 기능 추가 후 제거하기
-
-          setPrivateFolders(updatedPrivateFolders);
-          setSharedFolders(updatedSharedFolders); // TODO: 폴더 공유 설정 기능 추가 후 제거하기
+          addFolderToPrivateFolders(newFolder);
         } else {
           throw new Error("Request failed: " + response.status);
         }
@@ -100,10 +86,6 @@ export default function FolderSettingCard({
           setIsFolderModalOpen={setIsFolderModalOpen}
           folder={folderForModal}
           setFolder={setFolderForModal}
-          privateFolders={privateFolders}
-          setPrivateFolders={setPrivateFolders}
-          sharedFolders={sharedFolders}
-          setSharedFolders={setSharedFolders}
         />
       </div>
     </div>

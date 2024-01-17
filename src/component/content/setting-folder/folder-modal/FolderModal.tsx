@@ -8,21 +8,13 @@ type Props = {
   setIsFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   folder?: Folder;
   setFolder: React.Dispatch<React.SetStateAction<Folder | undefined>>;
-  privateFolders: Folder[];
-  setPrivateFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
-  sharedFolders: Folder[];
-  setSharedFolders: React.Dispatch<React.SetStateAction<Folder[]>>;
 };
 
 export default function FolderModal({
   isFolderModalOpen,
   setIsFolderModalOpen,
   folder,
-  setFolder,
-  privateFolders,
-  setPrivateFolders,
-  sharedFolders,
-  setSharedFolders,
+  setFolder
 }: Props) {
   const closeFolderModal = () => {
     setIsFolderModalOpen(false);
@@ -47,18 +39,10 @@ export default function FolderModal({
             <SubscribeSection
               folder={folder}
               setFolder={setFolder}
-              privateFolders={privateFolders}
-              setPrivateFolders={setPrivateFolders}
-              sharedFolders={sharedFolders}
-              setSharedFolders={setSharedFolders}
             />
             <MemberSection
               folder={folder}
               setFolder={setFolder}
-              privateFolders={privateFolders}
-              setPrivateFolders={setPrivateFolders}
-              sharedFolders={sharedFolders}
-              setSharedFolders={setSharedFolders}
             />
           </div>
         </div>
