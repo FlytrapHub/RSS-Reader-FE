@@ -9,6 +9,7 @@ type FoldersStoreType = {
   addFolderToPrivateFolders: (newFolder: Folder) => void;
   addFolderToSharedFolders: (newFolder: Folder) => void;
   updateFolder: (updatedFolder: Folder) => void;
+  deleteFolder: (folderId: number) => void;
 };
 
 export const useFoldersStore = create<FoldersStoreType>((set) => ({
@@ -92,5 +93,20 @@ export const useFoldersStore = create<FoldersStoreType>((set) => ({
       
       return prev;
     });
+  },
+  deleteFolder: (folderId: number) => {
+    set((prev) => {
+      prev.privateFolders = prev.privateFolders.filter(
+        (f) => f.id !== folderId
+      );
+      prev.sharedFolders = prev.sharedFolders.filter(
+        (f) => f.id !== folderId
+      );
+
+      return {
+        privateFolders: [...prev.privateFolders],
+        sharedFolders: [...prev.sharedFolders],
+      };
+    })
   },
 }));

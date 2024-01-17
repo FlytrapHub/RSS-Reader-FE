@@ -1,3 +1,6 @@
+import { API_PATH } from "../../../constants/ApiPath";
+import { useFoldersStore } from "../../../store/store";
+import authAxios from "../../../utill/ApiUtills";
 import { Folder } from "../../layout/sidebar/SideBarType";
 import FolderBox from "./FolderBox";
 
@@ -9,6 +12,21 @@ type Props = {
 };
 
 export default function FolderList({ title, folders, setFolderForModal, setIsFolderModalOpen }: Props) {
+  const { deleteFolder } = useFoldersStore();
+
+  const deleteFolderHandler = (folderId: number) => {
+    if (!confirm("해당 폴더를 삭제하시겠습니까?")) return;
+
+    authAxios
+      .delete(API_PATH.FOLDER.DELETE(folderId))
+      .then(function (response) {
+        if (response.status != 204) {
+          return;
+        }
+        
+        deleteFolder(folderId);
+      });
+  }
 
   return (
     <>
@@ -21,6 +39,7 @@ export default function FolderList({ title, folders, setFolderForModal, setIsFol
               folder={folder}
               setFolderForModal={setFolderForModal}
               setIsFolderModalOpen={setIsFolderModalOpen}
+              deleteHandler={deleteFolderHandler}
             />
           ))}
       </div>
