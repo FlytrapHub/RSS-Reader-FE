@@ -1,15 +1,10 @@
 import SideFolderTree from "./SideFolderTree";
-import { Folder } from "./SideBarType";
 import { PATH } from "../../../constants/Path";
 import { useNavigate } from "react-router-dom";
+import { useFoldersStore } from "../../../store/store";
 
-type Props = {
-  privateFolders: Folder[];
-  sharedFolders: Folder[];
-};
-
-export default function SideMenu({ privateFolders, sharedFolders }: Props) {
-
+export default function SideMenu() {
+  const { privateFolders, sharedFolders } = useFoldersStore();
   const navigate = useNavigate();
   const goToPage = (path: string) => {
     navigate(path);
