@@ -9,8 +9,6 @@ type Props = {
 };
 
 export default function FolderList({ title, folders, setFolderForModal, setIsFolderModalOpen }: Props) {
-  // const [isFolderModalOpen, setIsFolderModalOpen] = useState<boolean>(false);
-  // const [folderForModal, setFolderForModal] = useState<Folder | undefined>();
 
   return (
     <>
@@ -26,12 +24,6 @@ export default function FolderList({ title, folders, setFolderForModal, setIsFol
             />
           ))}
       </div>
-      {/* <FolderModal
-        isFolderModalOpen={isFolderModalOpen}
-        setIsFolderModalOpen={setIsFolderModalOpen}
-        folder={folderForModal}
-        setFolder={setFolderForModal}
-      /> */}
     </>
   );
 }
