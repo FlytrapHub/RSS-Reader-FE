@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../constants/Path";
 import { API_PATH } from "../../constants/ApiPath";
-import { StoredMemberInfo } from "./auth/AuthType";
+import { StoredMemberInfo } from "./AuthType";
 
 export default function GitHubCallbackPage() {
 
