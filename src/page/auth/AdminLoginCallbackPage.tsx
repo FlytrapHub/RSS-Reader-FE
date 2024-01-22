@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../constants/Path";
 import { API_PATH } from "../../constants/ApiPath";
-import { StoredMemberInfo } from "./AuthType";
+import { StoredMemberInfo } from "./auth/AuthType";
 
 export default function AdminLoginCallbackPage() {
   const navigate = useNavigate();
