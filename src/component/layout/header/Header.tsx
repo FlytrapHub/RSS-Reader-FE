@@ -2,7 +2,7 @@ import { Icon } from "../../common/Icon";
 import { API_PATH } from "../../../constants/ApiPath";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../../constants/Path";
-import { StoredMemberInfo } from "../../../page/auth/AuthTYpe";
+import { StoredMemberInfo } from "../../../page/auth/AuthType";
 import authAxios from "../../../utill/ApiUtills";
 
 type Props = {

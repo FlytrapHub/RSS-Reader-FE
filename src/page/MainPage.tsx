@@ -8,7 +8,7 @@ import { Pages } from "../constants/Pages";
 import FolderSettingContent from "../component/content/FolderSettingContent";
 import { API_PATH } from "../constants/ApiPath";
 import { PATH } from "../constants/Path";
-import { StoredMemberInfo } from "./auth/AuthTYpe";
+import { StoredMemberInfo } from "./auth/AuthType";
 import Header from "../component/layout/header/Header";
 import authAxios from "../utill/ApiUtills";
 import { useFoldersStore } from "../store/store";
