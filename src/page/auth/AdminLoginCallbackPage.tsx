@@ -2,19 +2,24 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PATH } from "../../constants/Path";
+import { API_PATH } from "../../constants/ApiPath";
+import { StoredMemberInfo } from "./AuthTYpe";
 
 export default function AdminLoginCallbackPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .post(import.meta.env.VITE_BASE_URL + '/admin/login', {
+      .post(import.meta.env.VITE_BASE_URL + API_PATH.AUTH.ADMIN_LOGIN, {
         code: import.meta.env.VITE_ADMIN_LOGIN_CODE
       }, {
         withCredentials: true
       })
       .then(function (response) {
         if (response.status == 201) {
+            const responseData: StoredMemberInfo = response.data.data;
+            localStorage.setItem('MEMBER_INFO', JSON.stringify(responseData));
+            
             navigate(PATH.MAIN);
         } else {
             throw new Error('Authentication failed');
