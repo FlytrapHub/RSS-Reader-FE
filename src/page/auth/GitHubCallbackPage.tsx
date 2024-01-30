@@ -8,9 +8,9 @@ export default function GitHubCallbackPage() {
 
   useEffect(() => {
     const code = queryString.parse(location.search).code;
-    const body = {
-      code: code,
-    };
+    // const body = {
+    //   code: code,
+    // };
 
     console.log("code : " + code)
 
