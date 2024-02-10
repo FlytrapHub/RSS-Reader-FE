@@ -54,6 +54,7 @@ export default function FolderSettingCard() {
             unreadCount: 0,
             blogs: [],
             invitedMembers: [],
+            isOpen: false,
           };
 
           addFolderToPrivateFolders(newFolder);
