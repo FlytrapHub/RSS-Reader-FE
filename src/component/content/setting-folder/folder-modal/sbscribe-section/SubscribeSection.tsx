@@ -67,6 +67,7 @@ export default function SubscribeSection({ folder, setFolder }: Props) {
           unreadCount: folder.unreadCount,
           blogs: folder.blogs,
           invitedMembers: folder.invitedMembers,
+          isOpen: folder.isOpen,
         };
 
         updateFolder(newFolder);
@@ -97,6 +98,7 @@ export default function SubscribeSection({ folder, setFolder }: Props) {
           unreadCount: folder.unreadCount,
           blogs: newBlogs,
           invitedMembers: folder.invitedMembers,
+          isOpen: folder.isOpen,
         };
         setFolder(newFolder);
 
