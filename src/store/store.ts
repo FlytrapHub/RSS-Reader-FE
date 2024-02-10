@@ -130,7 +130,7 @@ export const useFoldersStore = create<FoldersStoreType>((set, get) => ({
           return folder;
         }
       );
-      prev.sharedFolders = prev.sharedFolders.filter(
+      prev.sharedFolders = prev.sharedFolders.map(
         (folder) => {
           if (folder.id === folderId) {
             return { ...folder, isOpen: true };
@@ -155,7 +155,7 @@ export const useFoldersStore = create<FoldersStoreType>((set, get) => ({
           return folder;
         }
       );
-      prev.sharedFolders = prev.sharedFolders.filter(
+      prev.sharedFolders = prev.sharedFolders.map(
         (folder) => {
           if (folder.id === folderId) {
             return { ...folder, isOpen: false };
