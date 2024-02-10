@@ -24,7 +24,7 @@ export default function MainPage({ page }: Props) {
   let content: ReactNode;
   let key: number = 0;
 
-  const { setPrivateFolders, setSharedFolders } = useFoldersStore();
+  const { setPrivateFolders, setSharedFolders, isEmpty } = useFoldersStore();
   const [memberInfo, setMemberInfo] = useState<StoredMemberInfo | null>(null);
   const navigate = useNavigate();
 
@@ -38,17 +38,19 @@ export default function MainPage({ page }: Props) {
       return;
     }
 
-    authAxios
-      .get(API_PATH.FOLDER.GET_ALL)
-      .then(function (response) {
-        if (response.status == 200) {
-          const folders = response.data.data.folders;
-          setPrivateFolders(folders.PRIVATE);
-          setSharedFolders(folders.SHARED);
-        } else {
-          throw new Error("Request failed: " + response.status);
-        }
-      });
+    if (isEmpty()) {
+      authAxios
+        .get(API_PATH.FOLDER.GET_ALL)
+        .then(function (response) {
+          if (response.status == 200) {
+            const folders = response.data.data.folders;
+            setPrivateFolders(folders.PRIVATE);
+            setSharedFolders(folders.SHARED);
+          } else {
+            throw new Error("Request failed: " + response.status);
+          }
+        });
+    }
 
   }, [navigate, setPrivateFolders, setSharedFolders]);
 

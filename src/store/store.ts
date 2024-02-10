@@ -12,9 +12,10 @@ type FoldersStoreType = {
   deleteFolder: (folderId: number) => void;
   openFolder: (folderId: number) => void;
   closeFolder: (folderId: number) => void;
+  isEmpty: () => boolean;
 };
 
-export const useFoldersStore = create<FoldersStoreType>((set) => ({
+export const useFoldersStore = create<FoldersStoreType>((set, get) => ({
   privateFolders: [],
   sharedFolders: [],
   setPrivateFolders: (folders: Folder[]) =>
@@ -169,4 +170,8 @@ export const useFoldersStore = create<FoldersStoreType>((set) => ({
       };
     });
   },
+  isEmpty: () => {
+    const state = get();
+    return state.privateFolders.length == 0 && state.sharedFolders.length == 0;
+  }
 }));
