@@ -12,6 +12,7 @@ import { StoredMemberInfo } from "./auth/AuthType";
 import Header from "../component/layout/header/Header";
 import authAxios from "../utill/ApiUtills";
 import { useFoldersStore } from "../store/store";
+import FolderPostListContent from "../component/content/FolderPostListContent copy";
 
 type Props = {
   page: Pages;
@@ -23,7 +24,7 @@ export default function MainPage({ page }: Props) {
   let content: ReactNode;
   let key: number = 0;
 
-  const { setPrivateFolders, setSharedFolders } = useFoldersStore();
+  const { setPrivateFolders, setSharedFolders, isEmpty } = useFoldersStore();
   const [memberInfo, setMemberInfo] = useState<StoredMemberInfo | null>(null);
   const navigate = useNavigate();
 
@@ -37,17 +38,19 @@ export default function MainPage({ page }: Props) {
       return;
     }
 
-    authAxios
-      .get(API_PATH.FOLDER.GET_ALL)
-      .then(function (response) {
-        if (response.status == 200) {
-          const folders = response.data.data.folders;
-          setPrivateFolders(folders.PRIVATE);
-          setSharedFolders(folders.SHARED);
-        } else {
-          throw new Error("Request failed: " + response.status);
-        }
-      });
+    if (isEmpty()) {
+      authAxios
+        .get(API_PATH.FOLDER.GET_ALL)
+        .then(function (response) {
+          if (response.status == 200) {
+            const folders = response.data.data.folders;
+            setPrivateFolders(folders.PRIVATE);
+            setSharedFolders(folders.SHARED);
+          } else {
+            throw new Error("Request failed: " + response.status);
+          }
+        });
+    }
 
   }, [navigate, setPrivateFolders, setSharedFolders]);
 
@@ -58,6 +61,15 @@ export default function MainPage({ page }: Props) {
     }
     case Pages.BOOKMARK: {
       content = <BookmarkListContent />;
+      break;
+    }
+    case Pages.FOLDER: {
+      const data = location.state;
+      headerTitle = data.folderTitle;
+      key = data.folderId;
+      content = (
+        <FolderPostListContent key={key} folderId={data.folderId} />
+      );
       break;
     }
     case Pages.SUBSCRIBE: {
