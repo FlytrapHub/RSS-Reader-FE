@@ -10,15 +10,28 @@ type FoldersStoreType = {
   addFolderToSharedFolders: (newFolder: Folder) => void;
   updateFolder: (updatedFolder: Folder) => void;
   deleteFolder: (folderId: number) => void;
+  openFolder: (folderId: number) => void;
+  closeFolder: (folderId: number) => void;
+  isEmpty: () => boolean;
 };
 
-export const useFoldersStore = create<FoldersStoreType>((set) => ({
+export const useFoldersStore = create<FoldersStoreType>((set, get) => ({
   privateFolders: [],
   sharedFolders: [],
   setPrivateFolders: (folders: Folder[]) =>
-    set(() => ({ privateFolders: [...folders] })),
+    set(() => ({
+      privateFolders: folders.map((folder) => ({
+        ...folder,
+        isOpen: folder.isOpen ?? false,
+      }))
+    })),
   setSharedFolders: (folders: Folder[]) =>
-    set(() => ({ sharedFolders: [...folders] })),
+    set(() => ({
+      sharedFolders: folders.map((folder) => ({
+        ...folder,
+        isOpen: folder.isOpen ?? false,
+      }))
+    })),
   addFolderToPrivateFolders: (newFolder: Folder) =>
     set((prev) => ({ privateFolders: [...prev.privateFolders, newFolder] })),
   addFolderToSharedFolders: (newFolder: Folder) =>
@@ -81,16 +94,16 @@ export const useFoldersStore = create<FoldersStoreType>((set) => ({
         const folderIndex: number = prev.sharedFolders.findIndex(
           (f) => f.id == updatedFolder.id
         );
-  
+
         if (folderIndex !== -1) {
           prev.sharedFolders[folderIndex] = updatedFolder;
-  
+
           return { sharedFolders: [...prev.sharedFolders] };
         } else {
           return { sharedFolders: [...prev.sharedFolders, updatedFolder] };
         }
       }
-      
+
       return prev;
     });
   },
@@ -99,14 +112,66 @@ export const useFoldersStore = create<FoldersStoreType>((set) => ({
       prev.privateFolders = prev.privateFolders.filter(
         (f) => f.id !== folderId
       );
+      prev.sharedFolders = prev.sharedFolders.filter((f) => f.id !== folderId);
+
+      return {
+        privateFolders: [...prev.privateFolders],
+        sharedFolders: [...prev.sharedFolders],
+      };
+    });
+  },
+  openFolder: (folderId: number) => {
+    set((prev) => {
+      prev.privateFolders = prev.privateFolders.map(
+        (folder) => {
+          if (folder.id === folderId) {
+            return { ...folder, isOpen: true };
+          }
+          return folder;
+        }
+      );
       prev.sharedFolders = prev.sharedFolders.filter(
-        (f) => f.id !== folderId
+        (folder) => {
+          if (folder.id === folderId) {
+            return { ...folder, isOpen: true };
+          }
+          return folder;
+        }
       );
 
       return {
         privateFolders: [...prev.privateFolders],
         sharedFolders: [...prev.sharedFolders],
       };
-    })
+    });
   },
+  closeFolder: (folderId: number) => {
+    set((prev) => {
+      prev.privateFolders = prev.privateFolders.map(
+        (folder) => {
+          if (folder.id === folderId) {
+            return { ...folder, isOpen: false };
+          }
+          return folder;
+        }
+      );
+      prev.sharedFolders = prev.sharedFolders.filter(
+        (folder) => {
+          if (folder.id === folderId) {
+            return { ...folder, isOpen: false };
+          }
+          return folder;
+        }
+      );
+
+      return {
+        privateFolders: [...prev.privateFolders],
+        sharedFolders: [...prev.sharedFolders],
+      };
+    });
+  },
+  isEmpty: () => {
+    const state = get();
+    return state.privateFolders.length == 0 && state.sharedFolders.length == 0;
+  }
 }));
