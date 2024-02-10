@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Icon } from "../../common/Icon";
 import { Folder } from "./SideBarType";
 import { PATH } from "../../../constants/Path";
+import { useFoldersStore } from "../../../store/store";
 
 type Props = {
   title?: string;
@@ -9,7 +10,7 @@ type Props = {
 };
 
 export default function SideFolderTree({ title, folders }: Props) {
-  
+  const { openFolder, closeFolder } = useFoldersStore();
   const navigate = useNavigate();
   const goToSubscribePosts = (subscribeId: number, subscribeTitle: string) => {
     navigate(PATH.SUBSCRIBE, {
@@ -23,28 +24,42 @@ export default function SideFolderTree({ title, folders }: Props) {
   return (
     <>
       <div className="text-lg font-bold">{title || "이름 없음"}</div>
+
       <ul className="menu w-70 rounded-box">
-        <li>
-          {folders && folders.length > 0 ? (
-            folders.map((folder) => (
-              <details>
-                <summary>
-                  <Icon name="folder" />
+        {folders && folders.length > 0 ? (
+          folders.map((folder) => (
+            <li>
+              <span>
+                <Icon name="folder" />
+                <span>
                   {folder.name}
-                </summary>
-                <ul>
-                  {folder.blogs.map((blog) => (
-                    <li>
-                      <a onClick={() => goToSubscribePosts(blog.id, blog.title)}>{blog.title}</a>
-                    </li>
-                  ))}
-                </ul>
-              </details>
-            ))
-          ) : (
+                </span>
+                <span
+                  onClick={
+                    folder.isOpen
+                      ? () => closeFolder(folder.id)
+                      : () => openFolder(folder.id)
+                  }
+                >
+                  {folder.isOpen ? "▲" : "▼"}
+                </span>
+              </span>
+              <ul className={`menu-dropdown ${folder.isOpen ? 'menu-dropdown-show' : ''}`}>
+                {folder.blogs.map((blog) => (
+                  <li>
+                    <a onClick={() => goToSubscribePosts(blog.id, blog.title)}>
+                      {blog.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          ))
+        ) : (
+          <li>
             <p>폴더가 없습니다.</p>
-          )}
-        </li>
+          </li>
+        )}
       </ul>
     </>
   );

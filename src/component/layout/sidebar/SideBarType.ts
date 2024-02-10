@@ -16,4 +16,5 @@ export type Folder = {
   unreadCount: number;
   blogs: Blog[];
   invitedMembers: InvitedMember[];
+  isOpen: boolean;
 };
