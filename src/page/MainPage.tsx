@@ -12,6 +12,7 @@ import { StoredMemberInfo } from "./auth/AuthType";
 import Header from "../component/layout/header/Header";
 import authAxios from "../utill/ApiUtills";
 import { useFoldersStore } from "../store/store";
+import FolderPostListContent from "../component/content/FolderPostListContent copy";
 
 type Props = {
   page: Pages;
@@ -58,6 +59,15 @@ export default function MainPage({ page }: Props) {
     }
     case Pages.BOOKMARK: {
       content = <BookmarkListContent />;
+      break;
+    }
+    case Pages.FOLDER: {
+      const data = location.state;
+      headerTitle = data.folderTitle;
+      key = data.folderId;
+      content = (
+        <FolderPostListContent key={key} folderId={data.folderId} />
+      );
       break;
     }
     case Pages.SUBSCRIBE: {

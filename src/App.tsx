@@ -15,6 +15,7 @@ function App() {
         <Routes>
           <Route path={PATH.MAIN} element={<MainPage page={Pages.ALL_POST} />} />
           <Route path={PATH.BOOKMARK} element={<MainPage page={Pages.BOOKMARK} />} />
+          <Route path={PATH.FOLDER} element={<MainPage page={Pages.FOLDER} />} />
           <Route path={PATH.SUBSCRIBE} element={<MainPage page={Pages.SUBSCRIBE} />} />
           <Route path={PATH.SETTING.FOLDERS} element={<MainPage page={Pages.SET_FOLDERS} />} />
           <Route path={PATH.AUTH.LOGIN} element={<LoginPage />} />

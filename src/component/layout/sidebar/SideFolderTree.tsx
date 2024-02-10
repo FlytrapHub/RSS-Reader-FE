@@ -20,6 +20,14 @@ export default function SideFolderTree({ title, folders }: Props) {
       },
     });
   };
+  const goToFolderPosts = (folderId: number, folderTitle: string) => {
+    navigate(PATH.FOLDER, {
+      state: {
+        folderId: folderId,
+        folderTitle: folderTitle,
+      },
+    });
+  };
 
   return (
     <>
@@ -31,7 +39,7 @@ export default function SideFolderTree({ title, folders }: Props) {
             <li>
               <span>
                 <Icon name="folder" />
-                <span>
+                <span onClick={() => goToFolderPosts(folder.id, folder.name)}>
                   {folder.name}
                 </span>
                 <span
