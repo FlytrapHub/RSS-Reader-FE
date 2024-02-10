@@ -91,6 +91,7 @@ export default function MemberSection({ folder, setFolder }: Props) {
           unreadCount: folder.unreadCount,
           blogs: folder.blogs,
           invitedMembers: folder.invitedMembers,
+          isOpen: folder.isOpen,
         };
 
         updateFolder(newFolder);
@@ -128,6 +129,7 @@ export default function MemberSection({ folder, setFolder }: Props) {
           unreadCount: folder.unreadCount,
           blogs: folder.blogs,
           invitedMembers: newInvitedMembers,
+          isOpen: folder.isOpen,
         };
         setFolder(newFolder);
 
