@@ -33,7 +33,8 @@ export const API_PATH = {
     GET_ALL_BY_NAME: (memberName: string) => `/members?name=${memberName}`
   },
   ALERT: {
-    GET_ALL: (folderId: number) => `/folders/${folderId}/alerts`
+    GET_ALL: (folderId: number) => `/folders/${folderId}/alerts`,
+    ADD: (folderId: number) => `/folders/${folderId}/alerts`, 
   },
   AUTH: {
     LOGIN: "/auth/login",

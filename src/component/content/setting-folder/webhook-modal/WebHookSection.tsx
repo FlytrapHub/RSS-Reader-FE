@@ -2,9 +2,12 @@ import { useState } from "react";
 import { Alert } from "../../../layout/sidebar/SideBarType";
 import WebHookBox from "./WebHookBox";
 import { useWebHookModalStore } from "../../../../store/webHookModalStore";
+import authAxios from "../../../../utill/ApiUtills";
+import { API_PATH } from "../../../../constants/ApiPath";
 
 export default function WebHookSection() {
-  const { alerts } = useWebHookModalStore();
+  
+  const { alerts, addAlert, folderForModal } = useWebHookModalStore();
   const [newWebHookUrl, setNewWebHookUrl] = useState<string>("");
 
   const isNewWebHookUrlEmpty = (): boolean => {
@@ -28,9 +31,32 @@ export default function WebHookSection() {
   };
 
   const addWebHook = () => {
+    if (folderForModal == undefined) {
+      console.log("folder 정보가 없습니다.");
+      return;
+    }
+
     if (!alertInvalidWebHookUrl()) {
       return;
     }
+
+    authAxios
+      .post(API_PATH.ALERT.ADD(folderForModal.id), {
+        webhookUrl: newWebHookUrl,
+      })
+      .then(function (response) {
+        if (response.status != 200) {
+          return;
+        }
+
+        const newAlert: Alert = response.data.data;
+        addAlert(newAlert);
+
+        setNewWebHookUrl("");
+      })
+      .catch(function (error) {
+        alert(error.response.data.message);
+      });
   };
 
   return (
@@ -41,6 +67,7 @@ export default function WebHookSection() {
           type="text"
           placeholder="추가할 웹 훅 URL을 입력해주세요."
           className="input input-bordered input-primary w-full"
+          value={newWebHookUrl}
           onChange={(e) => setNewWebHookUrl(e.target.value)}
         />
         <button className="btn btn-square btn-secondary" onClick={addWebHook}>
