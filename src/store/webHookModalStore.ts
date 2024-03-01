@@ -9,6 +9,7 @@ type WebHookModalStoreType = {
   folderForModal?: Folder;
   setAlerts: (alerts: Alert[]) => void;
   addAlert: (newAlert: Alert) => void;
+  deleteAlert: (alertId: number) => void;
   openWebHookModal: (folder: Folder) => void;
   closeWebHookModal: () => void;
 };
@@ -23,6 +24,37 @@ export const useWebHookModalStore = create<WebHookModalStoreType>(
     },
     addAlert: (newAlert: Alert) =>
       set((prev) => ({ alerts: [...prev.alerts, newAlert] })),
+    deleteAlert: (alertId: number) => {
+
+      const folderId = get().folderForModal?.id;
+
+      if (folderId == undefined) {
+        alert('Folder 정보가 올바르지 않습니다.')
+        return;
+      }
+
+      authAxios
+        .delete(API_PATH.ALERT.DELETE(folderId, alertId))
+        .then(function(response) {
+          if (response.status != 200) {
+            alert("올바른 상태코드가 아닙니다. 상태코드를 확인하세요. 상태코드 = " + response.status);
+            return;
+          }
+
+          set((prev) => {
+            prev.alerts = prev.alerts.filter((a) => a.id !== alertId);
+      
+            return {
+              alerts: [...prev.alerts],
+            };
+          });
+          alert("알림이 삭제되었습니다.")
+
+        })
+        .catch(function (error) {
+          alert(error.response.data.message);
+        });
+    },
     openWebHookModal: (folder: Folder) => {
       const currentState = get().isWebHookModalOpen;
       if (currentState) {
