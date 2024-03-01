@@ -33,7 +33,7 @@ export default function FolderBox({
         <div className="flex-1 w-full text-lg text-left">{folder.name}</div>
       </div>
       <div className="flex flex-none justify-center w-1/12" onClick={() => openWebHookModal(folder)}>
-        <Icon name="delete_left" size="L" />
+        <Icon name="alert" size="L" />
       </div>
       <div className="flex flex-none justify-center w-1/12" onClick={() => deleteHandler(folder.id)}>
         <Icon name="delete_left" size="L" />
