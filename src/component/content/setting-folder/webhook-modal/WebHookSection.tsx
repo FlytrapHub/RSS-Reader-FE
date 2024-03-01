@@ -2,8 +2,6 @@ import { useState } from "react";
 import { Alert } from "../../../layout/sidebar/SideBarType";
 import WebHookBox from "./WebHookBox";
 import { useWebHookModalStore } from "../../../../store/webHookModalStore";
-import authAxios from "../../../../utill/ApiUtills";
-import { API_PATH } from "../../../../constants/ApiPath";
 
 export default function WebHookSection() {
   
@@ -40,23 +38,9 @@ export default function WebHookSection() {
       return;
     }
 
-    authAxios
-      .post(API_PATH.ALERT.ADD(folderForModal.id), {
-        webhookUrl: newWebHookUrl,
-      })
-      .then(function (response) {
-        if (response.status != 200) {
-          return;
-        }
-
-        const newAlert: Alert = response.data.data;
-        addAlert(newAlert);
-
-        setNewWebHookUrl("");
-      })
-      .catch(function (error) {
-        alert(error.response.data.message);
-      });
+    if (addAlert(newWebHookUrl)) {
+      setNewWebHookUrl("");
+    }
   };
 
   return (
