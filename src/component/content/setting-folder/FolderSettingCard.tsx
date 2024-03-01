@@ -5,6 +5,7 @@ import { useState } from "react";
 import FolderModal from "./folder-modal/FolderModal";
 import authAxios from "../../../utill/ApiUtills";
 import { useFoldersStore } from "../../../store/store";
+import WebHookModal from "./webhook-modal/WebHookModal";
 
 export default function FolderSettingCard() {
   const { privateFolders, sharedFolders, addFolderToPrivateFolders } = useFoldersStore();
@@ -38,12 +39,9 @@ export default function FolderSettingCard() {
     }
 
     authAxios
-      .post(
-        API_PATH.FOLDER.ADD,
-        {
-          name: newFolderName,
-        }
-      )
+      .post(API_PATH.FOLDER.ADD, {
+        name: newFolderName,
+      })
       .then(function (response) {
         if (response.status == 200) {
           const data = response.data.data;
@@ -74,13 +72,26 @@ export default function FolderSettingCard() {
             className="input input-bordered input-primary w-full"
             onChange={(e) => setNewFolderName(e.target.value)}
           />
-          <button className="btn btn-square btn-secondary" onClick={addPrivateFolder}>
+          <button
+            className="btn btn-square btn-secondary"
+            onClick={addPrivateFolder}
+          >
             +
           </button>
         </div>
         <div className="flex flex-col">
-          <FolderList title={'개인 폴더'} folders={privateFolders} setFolderForModal={setFolderForModal} setIsFolderModalOpen={setIsFolderModalOpen} />
-          <FolderList title={'공유 폴더'} folders={sharedFolders} setFolderForModal={setFolderForModal} setIsFolderModalOpen={setIsFolderModalOpen} />
+          <FolderList
+            title={"개인 폴더"}
+            folders={privateFolders}
+            setFolderForModal={setFolderForModal}
+            setIsFolderModalOpen={setIsFolderModalOpen}
+          />
+          <FolderList
+            title={"공유 폴더"}
+            folders={sharedFolders}
+            setFolderForModal={setFolderForModal}
+            setIsFolderModalOpen={setIsFolderModalOpen}
+          />
         </div>
         <FolderModal
           isFolderModalOpen={isFolderModalOpen}
@@ -88,6 +99,7 @@ export default function FolderSettingCard() {
           folder={folderForModal}
           setFolder={setFolderForModal}
         />
+        <WebHookModal />
       </div>
     </div>
   );

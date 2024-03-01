@@ -18,3 +18,9 @@ export type Folder = {
   invitedMembers: InvitedMember[];
   isOpen: boolean;
 };
+
+export type Alert = {
+  id: number;
+  platform: string;
+  webhookUrl: string;
+}

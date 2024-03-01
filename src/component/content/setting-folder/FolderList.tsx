@@ -11,7 +11,12 @@ type Props = {
   setIsFolderModalOpen: React.Dispatch<React.SetStateAction<boolean>>,
 };
 
-export default function FolderList({ title, folders, setFolderForModal, setIsFolderModalOpen }: Props) {
+export default function FolderList({ 
+  title, 
+  folders, 
+  setFolderForModal, 
+  setIsFolderModalOpen,
+}: Props) {
   const { deleteFolder } = useFoldersStore();
 
   const deleteFolderHandler = (folderId: number) => {
