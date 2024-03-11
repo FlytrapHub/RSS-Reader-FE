@@ -5,6 +5,7 @@ import Bookmark from "../../assets/bookmark.svg?react";
 import BookmarkFill from "../../assets/bookmark-fill.svg?react";
 import View from "../../assets/view.svg?react";
 import DeleteLeft from "../../assets/delete-left.svg?react";
+import Alert from "../../assets/alert.svg?react";
 import React from "react";
 
 // eslint-disable-next-line react-refresh/only-export-components
@@ -16,6 +17,7 @@ export const icons = {
   bookmarkFill: BookmarkFill,
   view: View,
   delete_left: DeleteLeft,
+  alert: Alert,
 };
 
 type IconProps = {
