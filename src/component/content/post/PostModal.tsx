@@ -19,15 +19,15 @@ export default function PostModal({ post, setPostForModal }: Props) {
         >
           ✕
         </button>
-        <h3 className="font-bold text-lg">{post.title}</h3>
-        <p>
+        <h3 className="font-bold text-4xl">{post.title}</h3>
+        <p className="text-blue-500 hover:text-blue-700 cursor-pointer">
           <a href={post.guid} target="_blank">
             {post.guid}
           </a>
         </p>
         <p>{post.pubDate}</p>
         <div className="py-4">
-          <div
+          <div className="post-content-css"
             dangerouslySetInnerHTML={{ __html: post.description }}
           >
         </div>
