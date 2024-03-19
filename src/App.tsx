@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import "./App.css";
+import "./PostContent.css";
 import LoginPage from './page/auth/LoginPage';
 import GitHubCallbackPage from './page/auth/GitHubCallbackPage';
 import { PATH } from './constants/Path';
